@@ -53,19 +53,19 @@ class UpdateScoresCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title(sprintf('Starting to update scores data (%d servers)', \count($servers)));
 
+        $allScores = [
+            'score' => OGameEndpoint::PLAYERS_RANK_POINTS,
+            'economyScore' => OGameEndpoint::PLAYERS_RANK_ECO,
+            'researchScore' => OGameEndpoint::PLAYERS_RANK_TECHNOLOGY,
+            'militaryScore' => OGameEndpoint::PLAYERS_RANK_MILITARY,
+            'militaryBuiltScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_BUILT,
+            'militaryDestroyedScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_DESTROYED,
+            'militaryLostScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_LOST,
+            'militaryHonorScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_HONOR,
+        ];
+
         foreach ($servers as $server) {
             $io->comment(sprintf('Updating scores of %s', $server->getName()));
-
-            $allScores = [
-                'score' => OGameEndpoint::PLAYERS_RANK_POINTS,
-                'economyScore' => OGameEndpoint::PLAYERS_RANK_ECO,
-                'researchScore' => OGameEndpoint::PLAYERS_RANK_TECHNOLOGY,
-                'militaryScore' => OGameEndpoint::PLAYERS_RANK_MILITARY,
-                'militaryBuiltScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_BUILT,
-                'militaryDestroyedScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_DESTROYED,
-                'militaryLostScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_LOST,
-                'militaryHonorScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_HONOR,
-            ];
 
             foreach ($allScores as $type => $endpoint) {
                 $data = $this->scoresAPI->getScores($server, $endpoint);
