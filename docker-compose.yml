@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+
+  nginx:
+    build: docker/nginx
+    volumes_from:
+      - php
+    links:
+      - php
+    depends_on:
+      - php
+    ports:
+      - '80:80'
+
+  php:
+    build: docker/php
+    volumes:
+      - '${SYMFONY_APP_PATH}:/symfony:rw,cached'
+    links:
+      - mysql
+
+  php-cli:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile-cli
+    volumes_from:
+      - php
+    links:
+      - mysql
+
+  mysql:
+    build: docker/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+    volumes:
+      - '${SYMFONY_APP_PATH}:/symfony:rw,cached'
+      - 'medusa_mysql:/var/lib/mysql:rw,cached'
+    ports:
+      - '3306:3306'
+
+volumes:
+  medusa_mysql: null

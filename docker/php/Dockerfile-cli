@@ -1,0 +1,106 @@
+FROM php:7.4-cli
+
+ENV DEBIAN_FRONTEND="noninteractive" \
+    SYMFONY_ALLOW_APPDEV=1 \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    NODE_VERSION=14.16.0
+
+# Set timezone
+RUN rm /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    supervisor \
+    zlib1g-dev \
+    libfontconfig1 \
+    libxrender1 \
+    libbz2-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    libpng-dev \
+    libicu-dev \
+    libz-dev \
+    libmemcached-dev \
+    libxml2-dev \
+    libssl-dev \
+    libcurl4-gnutls-dev \
+    gnupg \
+    wkhtmltopdf \
+    xvfb \
+    libzip-dev \
+    gnupg2 \
+    sudo \
+    libonig-dev
+
+RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn
+
+# node
+RUN curl -L -o /tmp/nodejs.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
+    tar xfvz /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 && \
+    rm -f /tmp/nodejs.tar.gz
+
+# Install APCu extension
+ADD https://pecl.php.net/get/apcu-5.1.17.tgz /tmp/apcu.tar.gz
+RUN mkdir -p /usr/src/php/ext/apcu\
+  && tar xf /tmp/apcu.tar.gz -C /usr/src/php/ext/apcu --strip-components=1
+
+# configure and install
+RUN docker-php-ext-configure apcu\
+  && docker-php-ext-install apcu
+
+RUN rm -rd /usr/src/php/ext/apcu && rm /tmp/apcu.tar.gz
+
+# Install APCu-BC extension
+ADD https://pecl.php.net/get/apcu_bc-1.0.3.tgz /tmp/apcu_bc.tar.gz
+RUN mkdir -p /usr/src/php/ext/apcu-bc\
+  && tar xf /tmp/apcu_bc.tar.gz -C /usr/src/php/ext/apcu-bc --strip-components=1
+
+# configure and install
+RUN docker-php-ext-configure apcu-bc\
+  && docker-php-ext-install apcu-bc
+
+RUN rm -rd /usr/src/php/ext/apcu-bc && rm /tmp/apcu_bc.tar.gz
+
+#Load APCU.ini before APC.ini
+RUN rm /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini
+RUN echo extension=apcu.so > /usr/local/etc/php/conf.d/20-php-ext-apcu.ini
+
+RUN rm /usr/local/etc/php/conf.d/docker-php-ext-apc.ini
+RUN echo extension=apc.so > /usr/local/etc/php/conf.d/21-php-ext-apc.ini
+
+
+RUN docker-php-ext-install pdo pdo_mysql mysqli bcmath zip bz2 exif intl pcntl shmop  gettext mbstring ftp curl opcache sockets
+
+# install xdebug
+RUN pecl install -f xdebug-2.9.8 \
+    && docker-php-ext-enable xdebug \
+    && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=\"PHPSTORM\"" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.default_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.profiler_enable=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_host=10.254.254.254" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+RUN rm -rf /var/lib/apt/list*
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN echo "symfony ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/dont-prompt-symfony-for-password
+
+# user
+RUN useradd -ms /bin/bash symfony
+RUN usermod -u 1000 symfony
+USER symfony
+
+WORKDIR /symfony
+
+COPY conf/php.ini /usr/local/etc/php/conf.d/100-php.ini
+
+CMD [ "/usr/bin/supervisord", "-c", "/symfony/docker/supervisord.conf" ]
