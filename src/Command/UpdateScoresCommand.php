@@ -57,17 +57,19 @@ class UpdateScoresCommand extends Command
             $io->comment(sprintf('Updating scores of %s', $server->getName()));
 
             $allScores = [
-                'score' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_POINTS),
-                'economyScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_ECO),
-                'researchScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_TECHNOLOGY),
-                'militaryScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_MILITARY),
-                'militaryBuiltScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_MILITARY_BUILT),
-                'militaryDestroyedScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_MILITARY_DESTROYED),
-                'militaryLostScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_MILITARY_LOST),
-                'militaryHonorScore' => $this->scoresAPI->getScores($server, OGameEndpoint::PLAYERS_RANK_MILITARY_HONOR),
+                'score' => OGameEndpoint::PLAYERS_RANK_POINTS,
+                'economyScore' => OGameEndpoint::PLAYERS_RANK_ECO,
+                'researchScore' => OGameEndpoint::PLAYERS_RANK_TECHNOLOGY,
+                'militaryScore' => OGameEndpoint::PLAYERS_RANK_MILITARY,
+                'militaryBuiltScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_BUILT,
+                'militaryDestroyedScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_DESTROYED,
+                'militaryLostScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_LOST,
+                'militaryHonorScore' => OGameEndpoint::PLAYERS_RANK_MILITARY_HONOR,
             ];
 
-            foreach ($allScores as $type => $data) {
+            foreach ($allScores as $type => $endpoint) {
+                $data = $this->scoresAPI->getScores($server, $endpoint);
+
                 foreach ($data as $row) {
                     if (null === $player = $this->playerRepository->findOneBy([
                             'server' => $server->getId(),
