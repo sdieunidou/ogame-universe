@@ -37,6 +37,8 @@
                 {% if not is_granted('ROLE_USER') %}
                     <a class="btn btn-outline-info my-2 my-sm-0 mr-2" href="{{ path('app_register') }}">S'inscrire</a>
                     <a class="btn btn-outline-success my-2 my-sm-0" href="{{ path('app_login') }}">S'identifier</a>
+                {% else %}
+                    <a class="btn btn-outline-danger my-2 my-sm-0" href="{{ path('app_logout') }}">Déconnexion</a>
                 {% endif %}
             </div>
         </nav>
@@ -55,10 +57,12 @@
         {% block body '' %}
     </main>
 
+    {#
     <footer class="footer">
         <div class="container">
             <span class="text-muted">Place sticky footer content here.</span>
         </div>
     </footer>
+    #}
 </body>
 </html>
