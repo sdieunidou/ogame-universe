@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Planet;
+use App\Entity\Player;
 use App\Entity\Server;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -49,5 +50,26 @@ class PlanetRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute()
         ;
+    }
+
+    public function getGalaxiesOfPlayer(Player $player): array
+    {
+        $rows = $this->createQueryBuilder('p')
+            ->select('p.galaxy')
+            ->innerJoin('p.player', 'pl')
+            ->andWhere('p.player = :playerId')
+            ->setParameter('playerId', $player->getId())
+            ->groupBy('p.galaxy')
+            ->getQuery()
+            ->getScalarResult()
+        ;
+
+        $galaxies = [];
+
+        foreach ($rows as $row) {
+            $galaxies[] = sprintf('G%d', $row['galaxy']);
+        }
+
+        return $galaxies;
     }
 }
