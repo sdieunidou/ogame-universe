@@ -54,6 +54,61 @@ class Player
     private $ogameId;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $score;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $scoreAt24H;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateOfScoreAt24H;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $economyScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $researchScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryBuiltScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryDestroyedScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryLostScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryHonorScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryShipsScore;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $status;
@@ -62,6 +117,17 @@ class Player
     {
         $this->status = self::STATUS_ACTIVE;
         $this->planets = new ArrayCollection();
+        $this->score = 0;
+        $this->scoreAt24H = 0;
+        $this->dateOfScoreAt24H = new \DateTimeImmutable();
+        $this->economyScore = 0;
+        $this->researchScore = 0;
+        $this->militaryScore = 0;
+        $this->militaryBuiltScore = 0;
+        $this->militaryDestroyedScore = 0;
+        $this->militaryLostScore = 0;
+        $this->militaryHonorScore = 0;
+        $this->militaryShipsScore = 0;
     }
 
     public function getId(): ?int
@@ -159,8 +225,140 @@ class Player
         return $this;
     }
 
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): self
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    public function getEconomyScore(): ?int
+    {
+        return $this->economyScore;
+    }
+
+    public function setEconomyScore(int $economyScore): self
+    {
+        $this->economyScore = $economyScore;
+
+        return $this;
+    }
+
+    public function getResearchScore(): ?int
+    {
+        return $this->researchScore;
+    }
+
+    public function setResearchScore(int $researchScore): self
+    {
+        $this->researchScore = $researchScore;
+
+        return $this;
+    }
+
+    public function getMilitaryScore(): ?int
+    {
+        return $this->militaryScore;
+    }
+
+    public function setMilitaryScore(int $militaryScore): self
+    {
+        $this->militaryScore = $militaryScore;
+
+        return $this;
+    }
+
+    public function getMilitaryBuiltScore(): ?int
+    {
+        return $this->militaryBuiltScore;
+    }
+
+    public function setMilitaryBuiltScore(int $militaryBuiltScore): self
+    {
+        $this->militaryBuiltScore = $militaryBuiltScore;
+
+        return $this;
+    }
+
+    public function getMilitaryDestroyedScore(): ?int
+    {
+        return $this->militaryDestroyedScore;
+    }
+
+    public function setMilitaryDestroyedScore(int $militaryDestroyedScore): self
+    {
+        $this->militaryDestroyedScore = $militaryDestroyedScore;
+
+        return $this;
+    }
+
+    public function getMilitaryLostScore(): ?int
+    {
+        return $this->militaryLostScore;
+    }
+
+    public function setMilitaryLostScore(int $militaryLostScore): self
+    {
+        $this->militaryLostScore = $militaryLostScore;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return (string) $this->getName();
+    }
+
+    public function getMilitaryHonorScore(): ?int
+    {
+        return $this->militaryHonorScore;
+    }
+
+    public function setMilitaryHonorScore(int $militaryHonorScore): self
+    {
+        $this->militaryHonorScore = $militaryHonorScore;
+
+        return $this;
+    }
+
+    public function getMilitaryShipsScore(): ?int
+    {
+        return $this->militaryShipsScore;
+    }
+
+    public function setMilitaryShipsScore(int $militaryShipsScore): self
+    {
+        $this->militaryShipsScore = $militaryShipsScore;
+
+        return $this;
+    }
+
+    public function getScoreAt24H(): ?int
+    {
+        return $this->scoreAt24H;
+    }
+
+    public function setScoreAt24H(int $scoreAt24H): self
+    {
+        $this->scoreAt24H = $scoreAt24H;
+
+        return $this;
+    }
+
+    public function getDateOfScoreAt24H(): ?\DateTimeInterface
+    {
+        return $this->dateOfScoreAt24H;
+    }
+
+    public function setDateOfScoreAt24H(\DateTimeInterface $dateOfScoreAt24H): self
+    {
+        $this->dateOfScoreAt24H = $dateOfScoreAt24H;
+
+        return $this;
     }
 }
