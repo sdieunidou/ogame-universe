@@ -18,8 +18,14 @@ class Player
     const STATUS_ADMIN = 'a';
     const STATUS_ACTIVE = 'active';
     const STATUS_INACTIVE = 'i';
+    const STATUS_LONG_INACTIVE = 'I';
     const STATUS_VACATION = 'v';
-    const STATUS_BANNED = 'vI';
+    const STATUS_VACATION_INACTIVE = 'vi';
+    const STATUS_VACATION_LONG_INACTIVE = 'vI';
+    const STATUS_BANNED = 'vb';
+    const STATUS_BANNED_INACTIVE = 'vib';
+    const STATUS_BANNED_LONG_INACTIVE = 'vIb';
+    const STATUS_HONORABLE = 'o';
 
     /**
      * @ORM\Id

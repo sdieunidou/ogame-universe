@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Planet;
+use App\Entity\Server;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,6 +37,17 @@ class PlanetRepository extends ServiceEntityRepository
             ->setMaxResults(15)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function deleteAllOfServer(Server $server)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.server = :serverId')
+            ->delete()
+            ->setParameter('serverId', $server->getId())
+            ->getQuery()
+            ->execute()
         ;
     }
 }

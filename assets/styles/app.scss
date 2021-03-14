@@ -76,18 +76,27 @@ code {
 }
 
 .player-status-a {
-  color: darkred;
+  color: red;
 }
 
-.player-status-vb {
-  color: deepskyblue;
+.player-status-vb,
+.player-status-vib,
+.player-status-vIb {
+  color: #7e7e7e;
   text-decoration: line-through;
 }
 
-.player-status-i {
+.player-status-i,
+.player-status-I {
   color: #6c757d;
 }
 
-.player-status-v {
-  color: lightskyblue;
+.player-status-o {
+  color: #F3F;
+}
+
+.player-status-v,
+.player-status-vi,
+.player-status-vI {
+  color: #0ff;
 }

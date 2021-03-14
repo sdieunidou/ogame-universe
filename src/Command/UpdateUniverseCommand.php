@@ -59,6 +59,8 @@ class UpdateUniverseCommand extends Command
             $data = $this->universeAPI->getUniverse($server);
             $io->comment(sprintf('%d planets returned by the OGame API', \count($data)));
 
+            $this->planetRepository->deleteAllOfServer($server);
+
             foreach ($data as $row) {
                 if (null === $planet = $this->planetRepository->findOneBy([
                         'server' => $server->getId(),

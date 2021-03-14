@@ -53,12 +53,12 @@
             {% for planet in planets %}
                 <tr>
                     {% if planet.position is defined %}
-                        <th>
+                        <th class="{{ _self.playerStatusColor(planet.player.status) }}">
                             [{{ galaxy }}:{{ system }}:{{ loop.index }}]
                         </th>
-                        <td>{{ planet.name }}</td>
-                        <td>
-                            <span class="{{ _self.playerStatusColor(planet.player.status) }}">
+                        <td class="{{ _self.playerStatusColor(planet.player.status) }}">{{ planet.name }}</td>
+                        <td class="{{ _self.playerStatusColor(planet.player.status) }}">
+                            <span>
                                 {{ planet.player.name }}
 
                                 {% if not planet.player.isActive %}
@@ -67,10 +67,22 @@
                             </span>
 
                             {% if planet.player.scorePosition > 0 %}
-                                <small>#{{ planet.player.scorePosition }}</small>
+                                <small>
+                                    (
+                                    <span data-toggle="tooltip" data-placement="bottom" title="{{ planet.player.score | number_format }} points">#{{ planet.player.scorePosition }}</span>
+                                    <span {% if planet.player.militaryScorePosition < 200 %}class="text-danger"{% endif%} data-toggle="tooltip" data-placement="bottom" title="Military - {{ planet.player.militaryScore | number_format }} points">#{{ planet.player.militaryScorePosition }}</span>
+                                    )
+                                </small>
                             {% endif %}
                         </td>
-                        <td>{{ planet.hasMoon ? 'Moon' : '' }}</td>
+                        <td class="{{ _self.playerStatusColor(planet.player.status) }}">
+                            {% if planet.hasMoon %}
+                                Moon
+                                <small>
+                                    {{ planet.moonSize | number_format }}km
+                                </small>
+                            {% endif %}
+                        </td>
                     {% else %}
                         <th>
                             [{{ galaxy }}:{{ system }}:{{ loop.index }}]

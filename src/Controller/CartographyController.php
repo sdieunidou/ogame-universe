@@ -36,10 +36,18 @@ class CartographyController extends AbstractController
             $planetsInSystem[$planet->getPosition()] = $planet;
         }
 
-        $form = $this->container->get('form.factory')->createNamed('', CoordinatesType::class, [
-            'galaxy' => $galaxy,
-            'system' => $system,
-        ]);
+        $form = $this->container->get('form.factory')->createNamed(
+            '',
+            CoordinatesType::class, [
+                'galaxy' => $galaxy,
+                'system' => $system,
+            ],
+            [
+                'method' => 'GET',
+                'csrf_protection' => false,
+            ]
+        );
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
