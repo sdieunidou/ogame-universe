@@ -57,6 +57,10 @@
                             <span>
                                 {{ planet.player.name }}
 
+                                {% if planet.player.alliance is not empty %}
+                                    <small><a href="{{ path('app_alliance_view', {id: planet.player.alliance.id}) }}">[{{ planet.player.alliance }}]</a></small>
+                                {% endif %}
+
                                 {% if not planet.player.isActive %}
                                     <small>({{ planet.player.status }})</small>
                                 {% endif %}

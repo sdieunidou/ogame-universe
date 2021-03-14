@@ -124,7 +124,7 @@ class Alliance
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return (string) $this->getTag();
     }
 
     /**
