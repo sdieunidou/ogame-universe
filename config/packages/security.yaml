@@ -29,6 +29,10 @@ security:
                 path:   app_logout
             custom_authenticator: App\Security\LoginFormAuthenticator
 
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
 
