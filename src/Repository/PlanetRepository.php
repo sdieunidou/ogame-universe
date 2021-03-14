@@ -19,32 +19,23 @@ class PlanetRepository extends ServiceEntityRepository
         parent::__construct($registry, Planet::class);
     }
 
-    // /**
-    //  * @return Planet[] Returns an array of Planet objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int $galaxy
+     * @param int $system
+     *
+     * @return Planet[] Returns an array of Planet objects
+     */
+    public function getPlanetsOfSystem(int $galaxy, int $system): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('p.galaxy = :galaxy')
+            ->andWhere('p.system = :system')
+            ->setParameter('galaxy', $galaxy)
+            ->setParameter('system', $system)
+            ->orderBy('p.position', 'ASC')
+            ->setMaxResults(15)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Planet
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

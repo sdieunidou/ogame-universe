@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Users' %}
+
+{% block body %}
+    <h1 class="mt-5 mb-3">Utilisateurs</h1>
+
+    <table class="table table-striped mt-5 table-sm table-dark  table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
