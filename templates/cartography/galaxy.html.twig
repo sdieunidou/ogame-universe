@@ -9,6 +9,14 @@
     </div>
 {% endmacro %}
 
+{%- macro playerStatus(status) -%}
+    player-status-{{ status }}
+{%- endmacro -%}
+
+{%- macro playerStatusColor(status) -%}
+    player-status-{{ status }}
+{%- endmacro -%}
+
 {% block body %}
     <div class="d-flex justify-content-cente mt-5 mb-1 form-coordinates">
         {{ form_start(form, {
@@ -49,7 +57,19 @@
                             [{{ galaxy }}:{{ system }}:{{ loop.index }}]
                         </th>
                         <td>{{ planet.name }}</td>
-                        <td>{{ planet.player.name }}</td>
+                        <td>
+                            <span class="{{ _self.playerStatusColor(planet.player.status) }}">
+                                {{ planet.player.name }}
+
+                                {% if not planet.player.isActive %}
+                                    <small>({{ planet.player.status }})</small>
+                                {% endif %}
+                            </span>
+
+                            {% if planet.player.scorePosition > 0 %}
+                                <small>#{{ planet.player.scorePosition }}</small>
+                            {% endif %}
+                        </td>
                         <td>{{ planet.hasMoon ? 'Moon' : '' }}</td>
                     {% else %}
                         <th>

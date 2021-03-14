@@ -61,6 +61,11 @@ class Player
     /**
      * @ORM\Column(type="integer")
      */
+    private $scorePosition;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $scoreAt24H;
 
     /**
@@ -82,6 +87,11 @@ class Player
      * @ORM\Column(type="integer")
      */
     private $militaryScore;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $militaryScorePosition;
 
     /**
      * @ORM\Column(type="integer")
@@ -118,11 +128,13 @@ class Player
         $this->status = self::STATUS_ACTIVE;
         $this->planets = new ArrayCollection();
         $this->score = 0;
+        $this->scorePosition = 0;
         $this->scoreAt24H = 0;
         $this->dateOfScoreAt24H = new \DateTimeImmutable();
         $this->economyScore = 0;
         $this->researchScore = 0;
         $this->militaryScore = 0;
+        $this->militaryScorePosition = 0;
         $this->militaryBuiltScore = 0;
         $this->militaryDestroyedScore = 0;
         $this->militaryLostScore = 0;
@@ -358,6 +370,35 @@ class Player
     public function setDateOfScoreAt24H(\DateTimeInterface $dateOfScoreAt24H): self
     {
         $this->dateOfScoreAt24H = $dateOfScoreAt24H;
+
+        return $this;
+    }
+
+    public function getScorePosition(): ?int
+    {
+        return $this->scorePosition;
+    }
+
+    public function setScorePosition(int $scorePosition): self
+    {
+        $this->scorePosition = $scorePosition;
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->getStatus() === self::STATUS_ACTIVE;
+    }
+
+    public function getMilitaryScorePosition(): ?int
+    {
+        return $this->militaryScorePosition;
+    }
+
+    public function setMilitaryScorePosition(int $militaryScorePosition): self
+    {
+        $this->militaryScorePosition = $militaryScorePosition;
 
         return $this;
     }

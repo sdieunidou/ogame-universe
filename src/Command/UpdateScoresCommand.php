@@ -85,10 +85,13 @@ class UpdateScoresCommand extends Command
 
                     switch ($type) {
                         case 'militaryScore':
+                            $player->setMilitaryScorePosition((int) $row[1]);
                             $player->setMilitaryShipsScore((int) $row[3]);
                             break;
 
                         case 'score':
+                            $player->setScorePosition((int) $row[1]);
+
                             $dt = new \DateTimeImmutable();
                             if ($dt->diff($player->getDateOfScoreAt24H())->days > 0) {
                                 $player->setScoreAt24H((int) $row[2]);
