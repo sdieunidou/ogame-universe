@@ -19,5 +19,6 @@ $(document).ready(function() {
     $('table.table-data').DataTable({
         paging: false,
         select: true,
+        order: [],
     });
 });

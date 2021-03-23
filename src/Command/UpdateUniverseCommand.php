@@ -83,7 +83,7 @@ class UpdateUniverseCommand extends Command
                     ->setPlayer($player)
                     ->setOgameId($row['id'])
                     ->setName($row['name'])
-                    ->setCoordinates($row['name'])
+                    ->setCoordinates($row['coords'])
                     ->setPosition($row['position'])
                     ->setSystem($row['system'])
                     ->setGalaxy($row['galaxy'])

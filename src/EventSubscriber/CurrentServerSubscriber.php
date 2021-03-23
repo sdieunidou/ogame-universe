@@ -39,14 +39,7 @@ final class CurrentServerSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-
-        if ($this->session->has(SwitchCurrentServerHandler::CURRENT_SERVER_ID)
-            && $this->session->has(SwitchCurrentServerHandler::CURRENT_SERVER_NAME)
-            && $this->session->has(SwitchCurrentServerHandler::CURRENT_SERVER_LANGUAGE)
-        ) {
+        if ($this->session->has(SwitchCurrentServerHandler::CURRENT_SERVER_ID)) {
             return;
         }
 

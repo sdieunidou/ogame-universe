@@ -19,6 +19,18 @@ class PlayerController extends AbstractController
     }
 
     /**
+     * @Route("/players", name="app_players")
+     */
+    public function list(): Response
+    {
+        $players = $this->playerRepository->getPlayers();
+
+        return $this->render('player/list.html.twig', [
+            'players' => $players,
+        ]);
+    }
+
+    /**
      * @Route("/players/24h", name="app_players_inactives")
      */
     public function inactives24H(Request $request): Response
@@ -29,7 +41,7 @@ class PlayerController extends AbstractController
             [
                 'minScore' => 500000,
                 'minMilitaryScore' => 500000,
-                'allowedScoreDiff' => 50000,
+                'allowedScoreDiff' => 0,
             ],
             [
                 'method' => 'GET',

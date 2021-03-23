@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Players' %}
+
+{% import 'app/_macro.html.twig' as ui %}
+
+{% block body %}
+    <table class="table table-striped mt-3 table-dark table-data display responsive">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nom</th>
+            <th>Score</th>
+            <th>Diff Score 24H</th>
+            <th>Galaxies</th>
+            <th>Economie</th>
+            <th>Recherche</th>
+            <th>Militaire</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for player in players %}
+            <tr class="{{ ui.playerStatusColor(player.status) }}">
+                <td>
+                    {{ ui.playerName(player) }}
+                </td>
+                <td>
+                    {{ player.score | number_format }}
+                </td>
+                <td>
+                    <span data-toggle="tooltip" data-placement="bottom" title="{{ player.scoreAt24H | number_format }} points">
+                        {{ player.score - player.scoreAt24H }}
+                    </span>
+                </td>
+                <td>{{ player_galaxies(player)|join(',') }}</td>
+                <td>
+                    {{ player.economyScore | number_format }}
+                </td>
+                <td>
+                    {{ player.researchScore | number_format }}
+                </td>
+                <td>
+                    {{ player.militaryScore | number_format }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

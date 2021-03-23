@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a0ab162fb5636479709f65872845bcf",
+    "content-hash": "ca4cf2da3b193f0f31f20d5143aa74f6",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1984,6 +1984,54 @@
                 }
             ],
             "time": "2020-12-14T13:15:25+00:00"
+        },
+        {
+            "name": "ogetit/ogetit",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Warsaalk/OGetIt.git",
+                "reference": "e7b21c7c7ed114ca52ca76d554d2ec8394a9b293"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Warsaalk/OGetIt/zipball/e7b21c7c7ed114ca52ca76d554d2ec8394a9b293",
+                "reference": "e7b21c7c7ed114ca52ca76d554d2ec8394a9b293",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "lib-curl": "*",
+                "php-64bit": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OGetIt\\": "src/OGetIt"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Klaas Van Parys"
+                }
+            ],
+            "description": "OGetIt is a open source PHP library for handling the new OGame API as of version 6.",
+            "homepage": "https://github.com/Warsaalk/OGetIt",
+            "keywords": [
+                "OGame",
+                "UniverseView"
+            ],
+            "support": {
+                "issues": "https://github.com/Warsaalk/OGetIt/issues",
+                "source": "https://github.com/Warsaalk/OGetIt/tree/v2.0.0"
+            },
+            "time": "2015-07-18T00:00:00+00:00"
         },
         {
             "name": "oro/doctrine-extensions",

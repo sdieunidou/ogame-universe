@@ -21,6 +21,21 @@ class PlayerRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Player[] Returns an array of Player objects
+     */
+    public function getPlayers(int $maxResults = 200): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.score > :minScore')
+            ->setParameter('minScore', 0)
+            ->orderBy('p.score', 'DESC')
+            ->setMaxResults($maxResults)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param Alliance $alliance
      *
      * @return Player[] Returns an array of Player objects

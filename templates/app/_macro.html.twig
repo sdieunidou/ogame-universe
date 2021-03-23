@@ -3,6 +3,10 @@
 {%- endmacro -%}
 
 {% macro playerName(player) %}
+    {% set randomSeed = random(1, 999999999) %}
+
+    <a data-toggle="collapse" href="#player-{{ player.id }}-{{ randomSeed }}">+</a>
+
     {% if player.alliance is not empty %}
         <small><a href="{{ path('app_alliance_view', {id: player.alliance.id}) }}">[{{ player.alliance }}]</a></small>
     {% endif %}
@@ -21,4 +25,32 @@
             )
         </small>
     {% endif %}
+
+    <div class="collapse" id="player-{{ player.id }}-{{ randomSeed }}">
+        {{ _self.playerPlanets(player) }}
+    </div>
 {% endmacro %}
+
+{%- macro playerPlanets(player) -%}
+    <ul class="list-unstyled">
+        {% for planet in player.planets %}
+            <li>
+                <small>
+                    <a href="{{ path('app_cartography', {
+                        galaxy: planet.galaxy,
+                        system: planet.system,
+                    }) }}">[{{ planet.coordinates }}]</a>
+
+                    {{ planet.name }}
+
+                    {% if planet.hasMoon %}
+                        Moon
+                        <small>
+                            {{ planet.moonSize | number_format }}km
+                        </small>
+                    {% endif %}
+                </small>
+            </li>
+        {% endfor %}
+    </ul>
+{%- endmacro -%}
