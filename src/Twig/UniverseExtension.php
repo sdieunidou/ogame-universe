@@ -5,15 +5,22 @@ namespace App\Twig;
 use App\Entity\Player;
 use App\OGame\Helper;
 use App\Repository\PlanetRepository;
+use App\Server\CurrentServerResolver;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class UniverseExtension extends AbstractExtension
 {
+    private $serverResolver;
+
     private $planetRepository;
 
-    public function __construct(PlanetRepository $planetRepository)
+    public function __construct(
+        CurrentServerResolver $serverResolver,
+        PlanetRepository $planetRepository
+    )
     {
+        $this->serverResolver = $serverResolver;
         $this->planetRepository = $planetRepository;
     }
 
@@ -28,12 +35,12 @@ class UniverseExtension extends AbstractExtension
 
     public function universeGalaxy(int $system): int
     {
-        return Helper::checkGalaxyNumber($system);
+        return Helper::checkGalaxyNumber($this->serverResolver->getCurrentServer(), $system);
     }
 
     public function universeSystem(int $system): int
     {
-        return Helper::checkSystemNumber($system);
+        return Helper::checkSystemNumber($this->serverResolver->getCurrentServer(), $system);
     }
 
     public function playerGalaxies(Player $player): array

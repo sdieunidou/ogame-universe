@@ -5,20 +5,25 @@ namespace App\Twig;
 use App\Entity\Server;
 use App\Handler\Server\SwitchCurrentServerHandler;
 use App\Repository\ServerRepository;
+use App\Server\CurrentServerResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ServerExtension extends AbstractExtension
 {
+    private $serverResolver;
+
     private $session;
 
     private $serverRepository;
 
     public function __construct(
+        CurrentServerResolver $serverResolver,
         SessionInterface $session,
         ServerRepository $serverRepository
     ) {
+        $this->serverResolver = $serverResolver;
         $this->session = $session;
         $this->serverRepository = $serverRepository;
     }
@@ -41,11 +46,7 @@ class ServerExtension extends AbstractExtension
 
     public function getCurrentServer(): ?Server
     {
-        if (!$serverId = $this->getCurrentServerId()) {
-            return null;
-        }
-
-        return $this->serverRepository->getServerOfId($serverId);
+        return $this->serverResolver->getCurrentServer();
     }
 
     public function getCurrentServerId(): ?int

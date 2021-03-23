@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\CoordinatesType;
 use App\OGame\Helper;
 use App\Repository\PlanetRepository;
+use App\Server\CurrentServerResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,41 +24,37 @@ class CartographyController extends AbstractController
      * @Route("/cartography", name="app_cartography")
      */
     public function galaxy(
-        Request $request
+        Request $request,
+        CurrentServerResolver $serverResolver
     ): Response {
-        $galaxy = Helper::checkGalaxyNumber($request->get('galaxy', 1));
-        $system = Helper::checkSystemNumber($request->get('system', 1));
-
-        $planetsInSystem = array_flip(range(1, 15));
-
-        $planets = $this->planetRepository->getPlanetsOfSystem($galaxy, $system);
-        foreach ($planets as $planet) {
-            $planetsInSystem[$planet->getPosition()] = $planet;
-        }
+        $server = $serverResolver->getCurrentServer();
 
         $form = $this->container->get('form.factory')->createNamed(
             '',
             CoordinatesType::class,
             [
-                'galaxy' => $galaxy,
-                'system' => $system,
+                'galaxy' => $request->get('galaxy', 1),
+                'system' => $request->get('system', 1),
             ],
             [
                 'method' => 'GET',
                 'csrf_protection' => false,
+                'server' => $server,
             ]
         );
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $galaxy = Helper::checkGalaxyNumber($form->getData()['galaxy']);
-            $system = Helper::checkSystemNumber($form->getData()['system']);
+        $planetsInSystem = array_flip(range(1, 15));
+
+        $planets = $this->planetRepository->getPlanetsOfSystem($form->getData()['galaxy'], $form->getData()['system']);
+        foreach ($planets as $planet) {
+            $planetsInSystem[$planet->getPosition()] = $planet;
         }
 
         return $this->render('cartography/galaxy.html.twig', [
-            'galaxy' => $galaxy,
-            'system' => $system,
+            'galaxy' => $form->getData()['galaxy'],
+            'system' => $form->getData()['system'],
             'planets' => $planetsInSystem,
             'form' => $form->createView(),
         ]);

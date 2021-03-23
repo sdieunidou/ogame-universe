@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,18 +14,20 @@ class CoordinatesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $server = $options['server'];
+
         $builder
             ->add('galaxy', NumberType::class, [
                 'html5' => true,
                 'attr' => [
                     'min' => 1,
-                    'max' => 9,
+                    'max' => $server->getGalaxies(),
                 ],
                 'constraints' => [
                     new NotBlank(),
                     new Range([
                         'min' => 1,
-                        'max' => 9,
+                        'max' => $server->getGalaxies(),
                     ]),
                 ],
             ])
@@ -33,16 +36,23 @@ class CoordinatesType extends AbstractType
                 'html5' => true,
                 'attr' => [
                     'min' => 1,
-                    'max' => 499,
+                    'max' => $server->getSystems(),
                 ],
                 'constraints' => [
                     new NotBlank(),
                     new Range([
                         'min' => 1,
-                        'max' => 499,
+                        'max' => $server->getSystems(),
                     ]),
                 ],
             ])
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired([
+            'server',
+        ]);
     }
 }

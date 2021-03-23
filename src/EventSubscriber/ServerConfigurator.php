@@ -3,33 +3,26 @@
 namespace App\EventSubscriber;
 
 use App\Entity\Server;
-use App\Handler\Server\SwitchCurrentServerHandler;
-use App\Repository\ServerRepository;
+use App\Server\CurrentServerResolver;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class ServerConfigurator implements EventSubscriberInterface
 {
-    private $session;
-
-    private $serverRepository;
+    private $serverResolver;
 
     private $entityManager;
 
     private $reader;
 
     public function __construct(
-        SessionInterface $session,
-        ServerRepository $serverRepository,
+        CurrentServerResolver $serverResolver,
         EntityManagerInterface $entityManager,
         Reader $reader
     ) {
-        $this->session = $session;
-        $this->serverRepository = $serverRepository;
+        $this->serverResolver = $serverResolver;
         $this->entityManager = $entityManager;
         $this->reader = $reader;
     }
@@ -45,15 +38,9 @@ final class ServerConfigurator implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if (!$this->session->has(SwitchCurrentServerHandler::CURRENT_SERVER_ID)) {
-            throw new \LogicException('No server ID found in user session');
-        }
-
-        $serverId = $this->session->get(SwitchCurrentServerHandler::CURRENT_SERVER_ID);
-
-        $server = $this->serverRepository->getServerOfId($serverId);
+        $server = $this->serverResolver->getCurrentServer();
         if (!$server instanceof Server) {
-            throw new \LogicException(sprintf('Server with ID "%d" not found', $serverId));
+            throw new \LogicException(sprintf('No current server found in session'));
         }
 
         $filter = $this->entityManager->getFilters()->enable('server_filter');
