@@ -23,7 +23,7 @@ class PlayerController extends AbstractController
      */
     public function list(): Response
     {
-        $players = $this->playerRepository->getPlayers();
+        $players = $this->playerRepository->getPlayersActives(1000);
 
         return $this->render('player/list.html.twig', [
             'players' => $players,

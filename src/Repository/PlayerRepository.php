@@ -23,6 +23,38 @@ class PlayerRepository extends ServiceEntityRepository
     /**
      * @return Player[] Returns an array of Player objects
      */
+    public function getPlayersActives(int $maxResults = 200): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.score > :minScore')
+            ->andWhere('p.status != :statusNoob')
+            ->setParameter('minScore', 0)
+            ->setParameter('statusNoob', Player::STATUS_HONORABLE);
+
+        $qb
+            ->andWhere(
+                $qb->expr()->notIn('p.status', [
+                    Player::STATUS_BANNED,
+                    Player::STATUS_BANNED_INACTIVE,
+                    Player::STATUS_BANNED_LONG_INACTIVE,
+                    Player::STATUS_VACATION,
+                    Player::STATUS_VACATION_INACTIVE,
+                    Player::STATUS_VACATION_LONG_INACTIVE,
+                ])
+            )
+        ;
+
+        return $qb
+            ->orderBy('p.score', 'DESC')
+            ->setMaxResults($maxResults)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Player[] Returns an array of Player objects
+     */
     public function getPlayers(int $maxResults = 200): array
     {
         return $this->createQueryBuilder('p')
