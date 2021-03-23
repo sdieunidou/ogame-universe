@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\Alliance;
 use App\Entity\Player;
 use App\OGame\Helper;
 use App\Repository\PlanetRepository;
@@ -29,7 +30,8 @@ class UniverseExtension extends AbstractExtension
         return [
             new TwigFunction('universe_galaxy', [$this, 'universeGalaxy']),
             new TwigFunction('universe_system', [$this, 'universeSystem']),
-            new TwigFunction('player_galaxies', [$this, 'playerGalaxies']),
+            new TwigFunction('player_galaxies', [$this, 'getPlayerGalaxies']),
+            new TwigFunction('planets_of_alliance_of_galaxy', [$this, 'getPlanetsOfAllianceOfGalaxy']),
         ];
     }
 
@@ -43,8 +45,13 @@ class UniverseExtension extends AbstractExtension
         return Helper::checkSystemNumber($this->serverResolver->getCurrentServer(), $system);
     }
 
-    public function playerGalaxies(Player $player): array
+    public function getPlayerGalaxies(Player $player): array
     {
         return $this->planetRepository->getGalaxiesOfPlayer($player);
+    }
+
+    public function getPlanetsOfAllianceOfGalaxy(Alliance $alliance, int $galaxy): array
+    {
+        return $this->planetRepository->getPlanetsOfAllianceOfGalaxy($alliance, $galaxy);
     }
 }

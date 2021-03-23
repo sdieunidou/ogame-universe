@@ -33,7 +33,7 @@
 
 {%- macro playerPlanets(player) -%}
     <ul class="list-unstyled">
-        {% for planet in player.planets %}
+        {% for planet in player.planets | sort((a, b) => a.coordinates <=> b.coordinates)  %}
             <li>
                 <small>
                     <a href="{{ path('app_cartography', {

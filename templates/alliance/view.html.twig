@@ -4,6 +4,8 @@
 
 {% import 'app/_macro.html.twig' as ui %}
 
+{% set server = current_server() %}
+
 {% block body %}
     <table class="table table-striped table-dark table-data display responsive">
         <thead class="thead-dark">
@@ -34,6 +36,37 @@
                     </td>
                     <td>
                         {{ player.militaryScore | number_format }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Planets</h2>
+
+    <table class="table table-striped table-dark">
+        <tbody>
+            {% for galaxy in range(1, server.galaxies) %}
+                <tr>
+                    <th>
+                        G{{ galaxy }}
+                    </th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for planet in planets_of_alliance_of_galaxy(alliance, galaxy) %}
+                                <li>
+                                    <a href="{{ path('app_cartography', {
+                                        galaxy: planet.galaxy,
+                                        system: planet.system,
+                                    }) }}">
+                                            [{% if planet.hasMoon %}M:{% endif %}{{ planet.coordinates }}]
+                                    </a>
+
+
+                                    {{ planet.playerName }}
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </td>
                 </tr>
             {% endfor %}

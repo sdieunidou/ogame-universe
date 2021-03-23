@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Alliance;
 use App\Entity\Planet;
 use App\Entity\Player;
 use App\Entity\Server;
@@ -71,5 +72,22 @@ class PlanetRepository extends ServiceEntityRepository
         }
 
         return $galaxies;
+    }
+
+    public function getPlanetsOfAllianceOfGalaxy(Alliance $alliance, int $galaxy): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.name, p.hasMoon, p.coordinates, p.system, p.galaxy, p.moonSize, pl.name as playerName')
+            ->innerJoin('p.player', 'pl')
+            ->innerJoin('pl.alliance', 'a')
+            ->andWhere('pl.alliance = :allianceId')
+            ->andWhere('p.galaxy = :galaxy')
+            ->setParameter('allianceId', $alliance->getId())
+            ->setParameter('galaxy', $galaxy)
+            ->groupBy('p.system')
+            ->orderBy('p.system')
+            ->getQuery()
+            ->getScalarResult()
+        ;
     }
 }

@@ -183,7 +183,7 @@ class Planet
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return (string) $this->getCoordinates();
     }
 
     public function getPosition(): ?int
