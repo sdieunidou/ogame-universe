@@ -30,9 +30,6 @@
                     <li class="nav-item {% if app.request.get('_route') == 'app_players_inactives' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('app_players_inactives') }}">Inactives 24H</a>
                     </li>
-                    <li class="nav-item {% if app.request.get('_route') == 'app_users' %}active{% endif %}">
-                        <a class="nav-link" href="{{ path('app_users') }}">Users</a>
-                    </li>
                 </ul>
 
                 {% if not is_granted('ROLE_USER') %}
