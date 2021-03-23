@@ -29,8 +29,7 @@ class UpdateAlliancesCommand extends Command
         ServerRepository $serverRepository,
         AllianceAPI $allianceAPI,
         AllianceRepository $allianceRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->serverRepository = $serverRepository;
         $this->allianceAPI = $allianceAPI;

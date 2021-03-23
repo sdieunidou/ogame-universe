@@ -75,6 +75,12 @@ code {
   }
 }
 
+.form-players-inactives {
+  input[type=number] {
+    max-width: 100px;
+  }
+}
+
 .player-status-a {
   color: red;
 }

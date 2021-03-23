@@ -1,5 +1,6 @@
 .idea/
 docker-compose.override.yml
+.php_cs.cache
 
 ###> symfony/framework-bundle ###
 /.env.local

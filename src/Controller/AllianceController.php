@@ -23,7 +23,7 @@ class AllianceController extends AbstractController
      */
     public function list(): Response
     {
-        $alliances = $this->allianceRepository->findAll();
+        $alliances = $this->allianceRepository->getAlliances();
 
         return $this->render('alliance/list.html.twig', [
             'alliances' => $alliances,

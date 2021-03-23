@@ -27,6 +27,9 @@
                     <li class="nav-item {% if app.request.get('_route') == 'app_alliances' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('app_alliances') }}">Alliances</a>
                     </li>
+                    <li class="nav-item {% if app.request.get('_route') == 'app_players_inactives' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('app_players_inactives') }}">Inactives 24H</a>
+                    </li>
                     <li class="nav-item {% if app.request.get('_route') == 'app_users' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('app_users') }}">Users</a>
                     </li>
@@ -36,6 +39,7 @@
                     <a class="btn btn-outline-info my-2 my-sm-0 mr-2" href="{{ path('app_register') }}">S'inscrire</a>
                     <a class="btn btn-outline-success my-2 my-sm-0" href="{{ path('app_login') }}">S'identifier</a>
                 {% else %}
+                    <a class="btn btn-outline-info my-2 mr-1 my-sm-0" href="{{ path('app_server_switch', {id: current_server_id()}) }}">{{ current_server_name() }} ({{ current_server_language() | upper }})</a>
                     <a class="btn btn-outline-danger my-2 my-sm-0" href="{{ path('app_logout') }}">Déconnexion</a>
                 {% endif %}
             </div>

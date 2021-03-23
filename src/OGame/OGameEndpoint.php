@@ -35,7 +35,7 @@ final class OGameEndpoint
     // GALAXY
     const UNIVERSE = 'https://s%s-%s.ogame.gameforge.com/api/universe.xml';
 
-    static public function buildUrl(string $url, int $universeId, string $lang): string
+    public static function buildUrl(string $url, int $universeId, string $lang): string
     {
         return sprintf($url, $universeId, $lang);
     }

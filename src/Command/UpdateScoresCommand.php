@@ -36,8 +36,7 @@ class UpdateScoresCommand extends Command
         ServerRepository $serverRepository,
         ScoresAPI $scoresAPI,
         PlayerRepository $playerRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->serverRepository = $serverRepository;
         $this->scoresAPI = $scoresAPI;

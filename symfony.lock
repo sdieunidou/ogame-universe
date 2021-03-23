@@ -105,6 +105,9 @@
     "nikic/php-parser": {
         "version": "v4.10.4"
     },
+    "oro/doctrine-extensions": {
+        "version": "2.0.0"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -561,6 +564,9 @@
         "version": "v5.2.5"
     },
     "twig/extra-bundle": {
+        "version": "v3.3.0"
+    },
+    "twig/intl-extra": {
         "version": "v3.3.0"
     },
     "twig/twig": {

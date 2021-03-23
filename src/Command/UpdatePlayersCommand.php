@@ -33,8 +33,7 @@ class UpdatePlayersCommand extends Command
         PlayerAPI $playerAPI,
         PlayerRepository $playerRepository,
         AllianceRepository $allianceRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->serverRepository = $serverRepository;
         $this->playerAPI = $playerAPI;

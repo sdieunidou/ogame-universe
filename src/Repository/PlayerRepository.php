@@ -35,4 +35,31 @@ class PlayerRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @param int $minScore
+     * @param int $minMilitaryScore
+     * @param int $allowedScoreDiff
+     *
+     * @return Player[] Returns an array of Player objects
+     */
+    public function getInactives24H(
+        int $minScore = 500000,
+        int $minMilitaryScore = 500000,
+        int $allowedScoreDiff = 50000
+    ): array {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->andWhere('p.score >= :minScore')
+            ->andWhere('p.militaryScore >= :minMilitaryScore')
+            ->andWhere('p.scoreAt24H <= p.score')
+            ->setParameter('minScore', $minScore)
+            ->setParameter('minMilitaryScore', $minMilitaryScore)
+            ->setParameter('allowedScoreDiff', $allowedScoreDiff)
+            ->orderBy('p.score', 'DESC')
+            ->having('p.score - p.scoreAt24H <= :allowedScoreDiff')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

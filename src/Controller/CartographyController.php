@@ -24,8 +24,7 @@ class CartographyController extends AbstractController
      */
     public function galaxy(
         Request $request
-    ): Response
-    {
+    ): Response {
         $galaxy = Helper::checkGalaxyNumber($request->get('galaxy', 1));
         $system = Helper::checkSystemNumber($request->get('system', 1));
 
@@ -38,7 +37,8 @@ class CartographyController extends AbstractController
 
         $form = $this->container->get('form.factory')->createNamed(
             '',
-            CoordinatesType::class, [
+            CoordinatesType::class,
+            [
                 'galaxy' => $galaxy,
                 'system' => $system,
             ],

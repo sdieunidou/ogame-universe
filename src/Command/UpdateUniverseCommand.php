@@ -37,8 +37,7 @@ class UpdateUniverseCommand extends Command
         UniverseAPI $universeAPI,
         PlanetRepository $planetRepository,
         PlayerRepository $playerRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->serverRepository = $serverRepository;
         $this->universeAPI = $universeAPI;
