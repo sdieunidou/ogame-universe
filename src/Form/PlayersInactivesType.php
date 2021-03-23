@@ -14,9 +14,15 @@ class PlayersInactivesType extends AbstractType
         $builder
             ->add('minScore', NumberType::class, [
                 'html5' => true,
+                'attr' => [
+                    'min' => 0,
+                ],
             ])
             ->add('minMilitaryScore', NumberType::class, [
                 'html5' => true,
+                'attr' => [
+                    'min' => 0,
+                ],
             ])
             ->add('allowedScoreDiff', NumberType::class, [
                 'html5' => true,

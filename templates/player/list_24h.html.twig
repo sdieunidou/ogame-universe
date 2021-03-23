@@ -7,9 +7,11 @@
 {%- endmacro -%}
 
 {% block body %}
-    <h1 class="mt-5 mb-3">Inactives Players 24H ({{ players|length }})</h1>
+    <h1 class="mt-5 mb-3">
+        Inactives Players 24H ({{ players|length }})
+    </h1>
 
-    <div class="d-flex justify-content-cente mt-2 form-players-inactives">
+    <div class="d-flex justify-content-cente mt-2 mb-5 form-players-inactives">
         {{ form_start(form, {
             attr: {
                 class: 'form-inline'
@@ -39,15 +41,15 @@
         {{ form_end(form) }}
     </div>
 
-    <table class="table table-striped mt-3 table-sm table-dark  table-hover">
+    <table class="table table-striped mt-3 table-sm table-dark table-hover table-data display responsive">
         <thead class="thead-dark">
             <tr>
                 <th>Nom</th>
                 <th>Score</th>
                 <th>Score 24H</th>
                 <th>Galaxies</th>
-                <th>Classement</th>
-                <th>Classement Militaire</th>
+                <th>Rank</th>
+                <th>Rank Militaire</th>
                 <th>Economie</th>
                 <th>Recherche</th>
                 <th>Militaire</th>

@@ -14,9 +14,17 @@ class CoordinatesType extends AbstractType
         $builder
             ->add('galaxy', NumberType::class, [
                 'html5' => true,
+                'attr' => [
+                    'min' => 1,
+                    'max' => 9,
+                ],
             ])
             ->add('system', NumberType::class, [
                 'html5' => true,
+                'attr' => [
+                    'min' => 1,
+                    'max' => 499,
+                ],
             ])
         ;
     }

@@ -48,7 +48,7 @@ class PlayerRepository extends ServiceEntityRepository
         int $minMilitaryScore = 500000,
         int $allowedScoreDiff = 50000
     ): array {
-        return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->andWhere('p.score >= :minScore')
             ->andWhere('p.militaryScore >= :minMilitaryScore')
@@ -57,7 +57,24 @@ class PlayerRepository extends ServiceEntityRepository
             ->setParameter('minMilitaryScore', $minMilitaryScore)
             ->setParameter('allowedScoreDiff', $allowedScoreDiff)
             ->orderBy('p.score', 'DESC')
-            ->having('p.score - p.scoreAt24H <= :allowedScoreDiff')
+            ->having('p.score - p.scoreAt24H <= :allowedScoreDiff');
+
+        $qb
+            ->andWhere(
+                $qb->expr()->notIn('p.status', [
+                    Player::STATUS_BANNED,
+                    Player::STATUS_BANNED_INACTIVE,
+                    Player::STATUS_BANNED_LONG_INACTIVE,
+                    Player::STATUS_INACTIVE,
+                    Player::STATUS_LONG_INACTIVE,
+                    Player::STATUS_VACATION,
+                    Player::STATUS_VACATION_INACTIVE,
+                    Player::STATUS_VACATION_LONG_INACTIVE,
+                ])
+            )
+        ;
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;
