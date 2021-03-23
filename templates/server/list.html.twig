@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Servers' %}
+
+{% block body %}
+    <table class="table table-striped mt-5 table-dark table-data display responsive">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Lang</th>
+                <th>Id</th>
+                <th>Gal.</th>
+                <th>Sys.</th>
+                <th>Player Update</th>
+                <th>Ranking Update</th>
+                <th>Alliance Update</th>
+                <th>Galaxy Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for server in servers %}
+                <tr>
+                    <td>
+                        <a href="{{ path('app_server_edit', {id: server.id}) }}">
+                            {{ server.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ server.language|upper }}
+                    </td>
+                    <td>
+                        {{ server.serverId }}
+                    </td>
+                    <td>
+                        {{ server.galaxies }}
+                    </td>
+                    <td>
+                        {{ server.systems }}
+                    </td>
+                    <td>
+                        {% if server.latestPlayerUpdate is not none %}
+                            {{ server.latestPlayerUpdate | format_datetime('short') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if server.latestRankingUpdate is not none %}
+                            {{ server.latestRankingUpdate | format_datetime('short') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if server.latestAllianceUpdate is not none %}
+                            {{ server.latestAllianceUpdate | format_datetime('short') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if server.latestUniverseUpdate is not none %}
+                            {{ server.latestUniverseUpdate | format_datetime('short') }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mt-3">
+        <a class="btn btn-primary btn-sm" href="{{ path('app_server_add') }}">Add a new server</a>
+    </div>
+{% endblock %}

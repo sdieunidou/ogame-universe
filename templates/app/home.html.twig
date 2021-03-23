@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block title %}{{ current_server_name() }} - {{ current_server_language()|upper }}{% endblock %}
 
+{% block body %}
+    <h1>{{ current_server_name() }} - {{ current_server_language()|upper }}</h1>
+
+    {% set server = current_server() %}
+    {{ include('server/_server.html.twig') }}
 {% endblock %}

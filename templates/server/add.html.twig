@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Add Server' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.language) }}
+
+        {{ form_row(form.serverId) }}
+
+        <div class="form-group">
+            <button type="submit" class="btn-primary btn">Add</button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

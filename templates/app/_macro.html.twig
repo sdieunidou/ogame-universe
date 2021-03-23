@@ -1,0 +1,24 @@
+{%- macro playerStatusColor(status) -%}
+    player-status-{{ status }}
+{%- endmacro -%}
+
+{% macro playerName(player) %}
+    {% if player.alliance is not empty %}
+        <small><a href="{{ path('app_alliance_view', {id: player.alliance.id}) }}">[{{ player.alliance }}]</a></small>
+    {% endif %}
+
+    {{ player.name }}
+
+    {% if not player.isActive %}
+        <small>({{ player.status }})</small>
+    {% endif %}
+
+    {% if player.scorePosition > 0 %}
+        <small>
+            (
+                <span data-toggle="tooltip" data-placement="bottom" title="{{ player.score | number_format }} points">#{{ player.scorePosition }}</span>
+                - <span {% if player.militaryScorePosition < 200 %}class="text-danger"{% endif%} data-toggle="tooltip" data-placement="bottom" title="Military - {{ player.militaryScore | number_format }} points">#{{ player.militaryScorePosition }}</span>
+            )
+        </small>
+    {% endif %}
+{% endmacro %}

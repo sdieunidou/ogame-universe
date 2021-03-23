@@ -3,30 +3,25 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\DataTransformer\JsonToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('username')
 
-            ->add('plainPassword', PasswordType::class, [
+            ->add('newPassword', PasswordType::class, [
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
@@ -36,16 +31,16 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
 
-            ->add('code', TextType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new EqualTo([
-                        'value' => 'wtf',
-                        'message' => 'This code is incorrect, you are not allowed to create an account.',
-                    ])
-                ]
+            ->add('roles', ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => array_flip([
+                    'ROLE_USER' => 'user',
+                    'ROLE_ADMIN' => 'admin',
+                ]),
             ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

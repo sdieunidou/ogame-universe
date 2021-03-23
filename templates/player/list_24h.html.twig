@@ -2,16 +2,10 @@
 
 {% block title 'Inactives Players 24H' %}
 
-{%- macro playerStatusColor(status) -%}
-    player-status-{{ status }}
-{%- endmacro -%}
+{% import 'app/_macro.html.twig' as ui %}
 
 {% block body %}
-    <h1 class="mt-5 mb-3">
-        Inactives Players 24H ({{ players|length }})
-    </h1>
-
-    <div class="d-flex justify-content-cente mt-2 mb-5 form-players-inactives">
+    <div class="d-flex justify-content-center form-players-inactives mb-4">
         {{ form_start(form, {
             attr: {
                 class: 'form-inline'
@@ -37,19 +31,18 @@
                 }) }}
             </div>
 
-            <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Find</button>
+            <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Apply!</button>
         {{ form_end(form) }}
     </div>
 
-    <table class="table table-striped mt-3 table-sm table-dark table-hover table-data display responsive">
+    <table class="table table-striped mt-3 table-dark table-data display responsive">
         <thead class="thead-dark">
             <tr>
-                <th>Nom</th>
+                <th>{{ players|length }} joueur(s)</th>
                 <th>Score</th>
                 <th>Score 24H</th>
+                <th>Diff</th>
                 <th>Galaxies</th>
-                <th>Rank</th>
-                <th>Rank Militaire</th>
                 <th>Economie</th>
                 <th>Recherche</th>
                 <th>Militaire</th>
@@ -57,44 +50,31 @@
         </thead>
         <tbody>
             {% for player in players %}
-                <tr>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
-                        {{ player.name }}
-
-                        {% if player.alliance is not none %}
-                            <a href="{{ path('app_alliance_view', {id: player.alliance.id}) }}">
-                                {{ player.alliance.tag }}
-                            </a>
-                        {% endif %}
+                <tr class="{{ ui.playerStatusColor(player.status) }}">
+                    <td>
+                        {{ ui.playerName(player) }}
                     </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
+                    <td>
                         {{ player.score | number_format }}
                     </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
+                    <td>
                         {% if player.scoreAt24H is not none and player.scoreAt24H is not none %}
                             <span data-toggle="tooltip" data-placement="bottom" title="{{ player.dateOfScoreAt24H | format_datetime }} points">
                                 {{ player.scoreAt24H | number_format }}
                             </span>
                         {% endif %}
                     </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">{{ player_galaxies(player)|join(',') }}</td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
-                        <span data-toggle="tooltip" data-placement="bottom" title="{{ player.score | number_format }} points">
-                            {{ player.scorePosition }}
-                        </span>
+                    <td>
+                        {{ player.score - player.scoreAt24H }}
                     </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
-                        <span data-toggle="tooltip" data-placement="bottom" title="{{ player.militaryScore | number_format }} points">
-                            {{ player.militaryScorePosition }}
-                        </span>
-                    </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
+                    <td>{{ player_galaxies(player)|join(',') }}</td>
+                    <td>
                         {{ player.economyScore | number_format }}
                     </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
+                    <td>
                         {{ player.researchScore | number_format }}
                     </td>
-                    <td class="{{ _self.playerStatusColor(player.status) }}">
+                    <td>
                         {{ player.militaryScore | number_format }}
                     </td>
                 </tr>

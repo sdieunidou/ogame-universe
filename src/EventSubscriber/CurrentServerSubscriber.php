@@ -16,6 +16,8 @@ final class CurrentServerSubscriber implements EventSubscriberInterface
 
     private $switchCurrentServer;
 
+    private $serverRepository;
+
     public function __construct(
         SessionInterface $session,
         ServerRepository $serverRepository,
@@ -30,7 +32,7 @@ final class CurrentServerSubscriber implements EventSubscriberInterface
     {
         return [
             'kernel.request' => [
-                ['onKernelRequest', 0],
+                ['onKernelRequest', 10],
             ],
         ];
     }

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title form.vars.data.name %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.language) }}
+
+        {{ form_row(form.serverId) }}
+
+        {% set server = form.vars.data %}
+        {{ include('server/_server.html.twig') }}
+
+        <div class="form-group">
+            <button type="submit" class="btn-primary btn">Update</button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

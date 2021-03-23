@@ -2,50 +2,48 @@
 
 namespace App\Form;
 
+use App\Entity\Server;
+use App\Form\DataTransformer\JsonToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-class PlayersInactivesType extends AbstractType
+class ServerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('minScore', NumberType::class, [
-                'html5' => true,
-                'attr' => [
-                    'min' => 0,
-                ],
+            ->add('language', null, [
                 'constraints' => [
                     new NotBlank(),
-                    new Range([
-                        'min' => 0,
+                    new Length([
+                        'min' => 2,
+                        'max' => 3,
                     ]),
                 ],
             ])
 
-            ->add('minMilitaryScore', NumberType::class, [
-                'html5' => true,
-                'attr' => [
-                    'min' => 0,
-                ],
+            ->add('serverId', NumberType::class, [
                 'constraints' => [
                     new NotBlank(),
                     new Range([
-                        'min' => 0,
+                        'min' => 1,
+                        'max' => 999,
                     ]),
-                ],
-            ])
-
-            ->add('allowedScoreDiff', NumberType::class, [
-                'html5' => true,
-                'constraints' => [
-                    new NotBlank(),
                 ],
             ])
         ;
+
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Server::class,
+        ]);
     }
 }

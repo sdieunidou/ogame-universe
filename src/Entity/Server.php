@@ -14,6 +14,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Server
 {
     use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -30,6 +31,36 @@ class Server
      * @ORM\Column(type="integer")
      */
     private $serverId;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $galaxies;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $systems;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $speed;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $speedFleet;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $donutGalaxy;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $donutSystem;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -258,6 +289,78 @@ class Server
                 $planet->setServer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGalaxies(): ?int
+    {
+        return $this->galaxies;
+    }
+
+    public function setGalaxies(int $galaxies): self
+    {
+        $this->galaxies = $galaxies;
+
+        return $this;
+    }
+
+    public function getSystems(): ?int
+    {
+        return $this->systems;
+    }
+
+    public function setSystems(int $systems): self
+    {
+        $this->systems = $systems;
+
+        return $this;
+    }
+
+    public function getSpeed(): ?int
+    {
+        return $this->speed;
+    }
+
+    public function setSpeed(int $speed): self
+    {
+        $this->speed = $speed;
+
+        return $this;
+    }
+
+    public function getSpeedFleet(): ?int
+    {
+        return $this->speedFleet;
+    }
+
+    public function setSpeedFleet(int $speedFleet): self
+    {
+        $this->speedFleet = $speedFleet;
+
+        return $this;
+    }
+
+    public function getDonutGalaxy(): ?int
+    {
+        return $this->donutGalaxy;
+    }
+
+    public function setDonutGalaxy(int $donutGalaxy): self
+    {
+        $this->donutGalaxy = $donutGalaxy;
+
+        return $this;
+    }
+
+    public function getDonutSystem(): ?int
+    {
+        return $this->donutSystem;
+    }
+
+    public function setDonutSystem(int $donutSystem): self
+    {
+        $this->donutSystem = $donutSystem;
 
         return $this;
     }

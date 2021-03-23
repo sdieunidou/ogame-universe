@@ -40,4 +40,24 @@ class ServerRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function getServers(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getServerOfId(int $id): ?Server
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.id = :serverId')
+            ->setParameter('serverId', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

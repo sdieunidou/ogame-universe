@@ -6,6 +6,7 @@ const $ = require('jquery');
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
 require('datatables.net-responsive-bs4');
+require('datatables.net-select-bs4');
 
 // or you can include specific pieces
 // require('bootstrap/js/dist/tooltip');
@@ -16,6 +17,7 @@ $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip()
 
     $('table.table-data').DataTable({
-        paging: false
+        paging: false,
+        select: true,
     });
 });

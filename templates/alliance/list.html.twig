@@ -3,12 +3,10 @@
 {% block title 'Alliances' %}
 
 {% block body %}
-    <h1 class="mt-5 mb-3">Alliances</h1>
-
-    <table class="table table-striped mt-5 table-sm table-dark table-hover table-data display responsive">
+    <table class="table table-striped mt-5 table-dark table-data display responsive">
         <thead class="thead-dark">
             <tr>
-                <th>Tag</th>
+                <th>Alliance</th>
                 <th>Nom</th>
                 <th>Site</th>
                 <th>Joueurs</th>
@@ -22,9 +20,9 @@
                             {{ alliance.tag }}
                         </a>
                     </td>
-                    <th>
+                    <td>
                         {{ alliance.name }}
-                    </th>
+                    </td>
                     <td>{{ alliance.website }}</td>
                     <td>{{ alliance.players.count }}</td>
                 </tr>

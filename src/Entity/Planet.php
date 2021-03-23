@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use App\ORM\Annotation\ServerAware;
 use App\Repository\PlanetRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PlanetRepository::class)
+ *
+ * @ServerAware(fieldName="server_id")
  */
 class Planet
 {

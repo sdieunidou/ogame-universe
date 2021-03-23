@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\Server;
 use App\Handler\Server\SwitchCurrentServerHandler;
 use App\Repository\ServerRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -25,10 +26,26 @@ class ServerExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('get_servers', [$this, 'getServers']),
+            new TwigFunction('current_server', [$this, 'getCurrentServer']),
             new TwigFunction('current_server_id', [$this, 'getCurrentServerId']),
             new TwigFunction('current_server_name', [$this, 'getCurrentServerName']),
             new TwigFunction('current_server_language', [$this, 'getCurrentServerLanguage']),
         ];
+    }
+
+    public function getServers(): array
+    {
+        return $this->serverRepository->getServers();
+    }
+
+    public function getCurrentServer(): ?Server
+    {
+        if (!$serverId = $this->getCurrentServerId()) {
+            return null;
+        }
+
+        return $this->serverRepository->getServerOfId($serverId);
     }
 
     public function getCurrentServerId(): ?int

@@ -1,0 +1,73 @@
+<table class="table table-striped mt-5 table-dark">
+    <tbody>
+    <tr>
+        <th>Name</th>
+        <td>{{ server.name }}</td>
+    </tr>
+
+    <tr>
+        <th>Language</th>
+        <td>{{ server.language|upper }}</td>
+    </tr>
+
+    <tr>
+        <th>Speed</th>
+        <td>{{ server.speed }}</td>
+    </tr>
+
+    <tr>
+        <th>Speed Fleet</th>
+        <td>{{ server.speedFleet }}</td>
+    </tr>
+
+    <tr>
+        <th>Nb. Galaxies</th>
+        <td>{{ server.galaxies }}</td>
+    </tr>
+
+    <tr>
+        <th>Nb. Systems</th>
+        <td>{{ server.systems }}</td>
+    </tr>
+
+    <tr>
+        <th>Galaxies Circulaires?</th>
+        <td>{{ server.donutGalaxy ? 'yes' : 'no' }}</td>
+    </tr>
+
+    <tr>
+        <th>Systems Circulaires?</th>
+        <td>{{ server.donutSystem ? 'yes' : 'no' }}</td>
+    </tr>
+
+    {% if server.latestPlayerUpdate is not none %}
+        <tr>
+            <th>Latest players update</th>
+            <td>
+                {{ server.latestPlayerUpdate|format_datetime }}
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if server.latestRankingUpdate is not none %}
+        <tr>
+            <th>Latest ranking update</th>
+            <td>{{ server.latestRankingUpdate|format_datetime }}</td>
+        </tr>
+    {% endif %}
+
+    {% if server.latestAllianceUpdate is not none %}
+        <tr>
+            <th>Latest alliances update</th>
+            <td>{{ server.latestAllianceUpdate|format_datetime }}</td>
+        </tr>
+    {% endif %}
+
+    {% if server.latestUniverseUpdate is not none %}
+        <tr>
+            <th>Latest galaxy update</th>
+            <td>{{ server.latestUniverseUpdate|format_datetime }}</td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

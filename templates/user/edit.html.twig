@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title form.vars.data.username %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.username) }}
+
+        {{ form_row(form.newPassword) }}
+
+        {{ form_row(form.roles) }}
+
+        <div class="form-group">
+            <button type="submit" class="btn-primary btn">Update</button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

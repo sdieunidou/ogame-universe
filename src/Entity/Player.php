@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\ORM\Annotation\ServerAware;
 use App\Repository\PlayerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PlayerRepository::class)
+ *
+ * @ServerAware(fieldName="server_id")
  */
 class Player
 {

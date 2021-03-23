@@ -24,9 +24,11 @@
                     <li class="nav-item {% if app.request.get('_route') == 'app_cartography' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('app_cartography') }}">Galaxy</a>
                     </li>
+
                     <li class="nav-item {% if app.request.get('_route') == 'app_alliances' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('app_alliances') }}">Alliances</a>
                     </li>
+
                     <li class="nav-item {% if app.request.get('_route') == 'app_players_inactives' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('app_players_inactives') }}">Inactives 24H</a>
                     </li>
@@ -36,7 +38,31 @@
                     <a class="btn btn-outline-info my-2 my-sm-0 mr-2" href="{{ path('app_register') }}">S'inscrire</a>
                     <a class="btn btn-outline-success my-2 my-sm-0" href="{{ path('app_login') }}">S'identifier</a>
                 {% else %}
-                    <a class="btn btn-outline-info my-2 mr-1 my-sm-0" href="{{ path('app_server_switch', {id: current_server_id()}) }}">{{ current_server_name() }} ({{ current_server_language() | upper }})</a>
+                    <div class="dropdown my-2 my-sm-0 mr-2">
+                        <a class="btn btn-outline-info dropdown-toggle" href="{{ path('app_server_switch', {id: current_server_id()}) }}" data-toggle="dropdown">
+                            {{ current_server_name() }} ({{ current_server_language() | upper }})
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% for server in get_servers() %}
+                                <a class="dropdown-item" href="{{ path('app_server_switch', {id: server.id}) }}">{{ server.name }} ({{ server.language | upper }})</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="dropdown my-2 my-sm-0 mr-2">
+                            <a class="btn btn-outline-warning dropdown-toggle" data-toggle="dropdown">
+                                Admin
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{{ path('app_servers') }}">Servers</a>
+                                <a class="dropdown-item" href="{{ path('app_users') }}">Users</a>
+                            </div>
+                        </div>
+                    {% endif %}
+
                     <a class="btn btn-outline-danger my-2 my-sm-0" href="{{ path('app_logout') }}">Déconnexion</a>
                 {% endif %}
             </div>
