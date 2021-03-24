@@ -23,25 +23,24 @@ class XtenseController extends AbstractController
      */
     public function endpoint(Request $request): Response
     {
-        $requestData = json_decode($request->getContent(), true);
-
-        if (empty($requestData['universe'])) {
-            throw new XtenseException('"universe" not provided');
-        }
-
-        if (empty($requestData['password'])) {
-            throw new XtenseException('"password" not provided');
-        }
-
-        if (empty($requestData['type'])) {
-            throw new XtenseException('"type" not provided');
-        }
-
-        $response = new Response();
-
         $startTime = $this->xtense->getMicrotime();
 
+        $response = new Response();
+        $requestData = json_decode($request->getContent(), true);
+
         try {
+            if (empty($requestData['universe'])) {
+                throw new XtenseException('"universe" not provided');
+            }
+
+            if (empty($requestData['password'])) {
+                throw new XtenseException('"password" not provided');
+            }
+
+            if (empty($requestData['type'])) {
+                throw new XtenseException('"type" not provided');
+            }
+
             $user = $this->xtense->authenticate($requestData['password']);
             $server = $this->xtense->resolveServerOfUser($requestData['universe']);
 
