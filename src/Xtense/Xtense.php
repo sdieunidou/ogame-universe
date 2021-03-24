@@ -109,8 +109,11 @@ class Xtense
                 switch ($data['type']) {
                     case 'spy':
                     case 'spy_shared':
-                        ($this->addSpyReportHandler)($server, $data['ogapilnk']);
+                        $spy = ($this->addSpyReportHandler)($server, $data['ogapilnk']);
+                        
                         $returnedData['type'] = 'spy';
+                        $returnedData['apiKey'] = $data['ogapilnk'];
+                        $returnedData['reportId'] = $spy->getId();
                         break;
 
                     case 'ennemy_spy':
