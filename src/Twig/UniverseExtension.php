@@ -47,11 +47,11 @@ class UniverseExtension extends AbstractExtension
 
     public function getPlayerGalaxies(Player $player): array
     {
-        return $this->planetRepository->getGalaxiesOfPlayer($player);
+        return $this->planetRepository->getGalaxiesOfPlayer($this->serverResolver->getCurrentServer(), $player);
     }
 
     public function getPlanetsOfAllianceOfGalaxy(Alliance $alliance, int $galaxy): array
     {
-        return $this->planetRepository->getPlanetsOfAllianceOfGalaxy($alliance, $galaxy);
+        return $this->planetRepository->getPlanetsOfAllianceOfGalaxy($this->serverResolver->getCurrentServer(), $alliance, $galaxy);
     }
 }

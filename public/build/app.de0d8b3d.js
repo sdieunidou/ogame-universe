@@ -1,1 +1,0 @@
-(self.webpackChunk=self.webpackChunk||[]).push([[143],{144:(t,e,a)=>{"use strict";var o=a(755);a(734),a(746),a(168),o(document).ready((function(){o('[data-toggle="popover"]').popover(),o('[data-toggle="tooltip"]').tooltip(),o("table.table-data").DataTable({paging:!1,select:!0,order:[]})}))}},t=>{"use strict";t.O(void 0,[274],(()=>{return e=144,t(t.s=e);var e}))}]);

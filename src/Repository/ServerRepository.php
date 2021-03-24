@@ -19,6 +19,18 @@ class ServerRepository extends ServiceEntityRepository
         parent::__construct($registry, Server::class);
     }
 
+    public function getFirstOfLanguage(string $language): ?Server
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.language = :language')
+            ->setParameter('language', $language)
+            ->orderBy('s.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     public function getLatestOfLanguage(string $language): ?Server
     {
         return $this->createQueryBuilder('s')

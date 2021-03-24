@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Alliance;
 use App\Repository\AllianceRepository;
 use App\Repository\PlayerRepository;
+use App\Server\CurrentServerResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,9 +22,9 @@ class AllianceController extends AbstractController
     /**
      * @Route("/alliances", name="app_alliances")
      */
-    public function list(): Response
+    public function list(CurrentServerResolver $serverResolver): Response
     {
-        $alliances = $this->allianceRepository->getAlliances();
+        $alliances = $this->allianceRepository->getAlliances($serverResolver->getCurrentServer());
 
         return $this->render('alliance/list.html.twig', [
             'alliances' => $alliances,

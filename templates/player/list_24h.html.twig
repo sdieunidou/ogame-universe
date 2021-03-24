@@ -5,80 +5,82 @@
 {% import 'app/_macro.html.twig' as ui %}
 
 {% block body %}
-    <div class="d-flex justify-content-center form-players-inactives mb-4">
-        {{ form_start(form, {
-            attr: {
-                class: 'form-inline'
-            }
-        }) }}
-            <div class="form-group">
-                {{ form_row(form.minScore, {
-                    attr: {
-                        class: 'form-control-sm mr-1 ml-2'
-                    }
-                }) }}
+    <div class="page-inactive-24h">
+        <div class="d-flex form-players-inactives mb-3">
+            {{ form_start(form, {
+                attr: {
+                    class: 'form-inline'
+                }
+            }) }}
+                <div class="form-group">
+                    {{ form_row(form.minScore, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
 
-                {{ form_row(form.minMilitaryScore, {
-                    attr: {
-                        class: 'form-control-sm mr-1 ml-2'
-                    }
-                }) }}
+                    {{ form_row(form.minMilitaryScore, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
 
-                {{ form_row(form.allowedScoreDiff, {
-                    attr: {
-                        class: 'form-control-sm mr-1 ml-2'
-                    }
-                }) }}
-            </div>
+                    {{ form_row(form.allowedScoreDiff, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
+                </div>
 
-            <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Apply!</button>
-        {{ form_end(form) }}
-    </div>
+                <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Apply!</button>
+            {{ form_end(form) }}
+        </div>
 
-    <table class="table table-striped mt-3 table-dark table-data display responsive">
-        <thead class="thead-dark">
-            <tr>
-                <th>{{ players|length }} joueur(s)</th>
-                <th>Score</th>
-                <th>Score 24H</th>
-                <th>Diff</th>
-                <th>Galaxies</th>
-                <th>Economie</th>
-                <th>Recherche</th>
-                <th>Militaire</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for player in players %}
-                <tr class="{{ ui.playerStatusColor(player.status) }}">
-                    <td>
-                        {{ ui.playerName(player) }}
-                    </td>
-                    <td>
-                        {{ player.score | number_format }}
-                    </td>
-                    <td>
-                        {% if player.scoreAt24H is not none and player.scoreAt24H is not none %}
-                            <span data-toggle="tooltip" data-placement="bottom" title="{{ player.dateOfScoreAt24H | format_datetime }} points">
-                                {{ player.scoreAt24H | number_format }}
-                            </span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {{ player.score - player.scoreAt24H }}
-                    </td>
-                    <td>{{ player_galaxies(player)|join(',') }}</td>
-                    <td>
-                        {{ player.economyScore | number_format }}
-                    </td>
-                    <td>
-                        {{ player.researchScore | number_format }}
-                    </td>
-                    <td>
-                        {{ player.militaryScore | number_format }}
-                    </td>
+        <table class="table table-striped mt-3 table-dark table-data display responsive">
+            <thead class="thead-dark">
+                <tr>
+                    <th>{{ players|length }} joueur(s)</th>
+                    <th>Score</th>
+                    <th>Score 24H</th>
+                    <th>Diff</th>
+                    <th>Galaxies</th>
+                    <th>Economie</th>
+                    <th>Recherche</th>
+                    <th>Militaire</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                    <tr class="{{ ui.playerStatusColor(player.status) }}">
+                        <td>
+                            {{ ui.playerName(player) }}
+                        </td>
+                        <td>
+                            {{ player.score | number_format }}
+                        </td>
+                        <td>
+                            {% if player.scoreAt24H is not none and player.scoreAt24H is not none %}
+                                <span data-toggle="tooltip" data-placement="bottom" title="{{ player.dateOfScoreAt24H | format_datetime }} points">
+                                    {{ player.scoreAt24H | number_format }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ player.score - player.scoreAt24H }}
+                        </td>
+                        <td>{{ player_galaxies(player)|join(',') }}</td>
+                        <td>
+                            {{ player.economyScore | number_format }}
+                        </td>
+                        <td>
+                            {{ player.researchScore | number_format }}
+                        </td>
+                        <td>
+                            {{ player.militaryScore | number_format }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

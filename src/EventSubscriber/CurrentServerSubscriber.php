@@ -43,7 +43,7 @@ final class CurrentServerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $server = $this->serverRepository->getLatestOfLanguage(
+        $server = $this->serverRepository->getFirstOfLanguage(
             mb_substr($event->getRequest()->getPreferredLanguage(), 0, 2)
         );
 

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Alliance;
+use App\Entity\Server;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,9 +23,11 @@ class AllianceRepository extends ServiceEntityRepository
     /**
      * @return Alliance[] Returns an array of Alliance objects
      */
-    public function getAlliances(): array
+    public function getAlliances(Server $server): array
     {
         return $this->createQueryBuilder('a')
+            ->andWhere('a.server = :serverId')
+            ->setParameter('serverId', $server->getId())
             ->orderBy('a.id', 'ASC')
             ->getQuery()
             ->getResult()

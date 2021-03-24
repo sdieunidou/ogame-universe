@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Server;
+use App\Entity\Spy;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @method Spy|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Spy|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Spy[]    findAll()
+ * @method Spy[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class SpyRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Spy::class);
+    }
+
+    /**
+     * @param Server $server
+     *
+     * @return Spy[] Returns an array of Spy objects
+     */
+    public function getOfServer(Server $server): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.server = :serverId')
+            ->setParameter('serverId', $server->getId())
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+}

@@ -47,7 +47,12 @@ class CartographyController extends AbstractController
 
         $planetsInSystem = array_flip(range(1, 15));
 
-        $planets = $this->planetRepository->getPlanetsOfSystem($form->getData()['galaxy'], $form->getData()['system']);
+        $planets = $this->planetRepository->getPlanetsOfSystem(
+            $server,
+            $form->getData()['galaxy'],
+            $form->getData()['system']
+        );
+
         foreach ($planets as $planet) {
             $planetsInSystem[$planet->getPosition()] = $planet;
         }

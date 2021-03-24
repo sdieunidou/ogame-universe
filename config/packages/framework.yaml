@@ -22,7 +22,9 @@ framework:
         max_host_connections: 1
 
         default_options:
-            headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36' }
+            headers: {
+                'user-agent-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36'
+            }
             max_redirects: 1
             max_duration: 60 # in seconds
 

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Spy' %}
+
+{% import 'app/_macro.html.twig' as ui %}
+
+{% block body %}
+    <div class="page-spy">
+        <div class="d-flex mb-3 form-coordinates">
+            {{ form_start(form, {
+                attr: {
+                    class: 'form-inline'
+                }
+            }) }}
+                {{ form_row(form.report, {
+                    attr: {
+                        class: 'form-control-sm ml-2',
+                        placeholder: 'sr-'
+                    }
+                }) }}
+
+                <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Add Spy Report</button>
+            {{ form_end(form) }}
+        </div>
+
+        <table class="table table-striped mt-3 table-dark table-data display responsive">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Target</th>
+                    <th>Player</th>
+                    <th>Nb. Ships</th>
+                    <th>Nb. Defense</th>
+                    <th>Activity</th>
+                    <th>Spy At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                    <tr class="{{ ui.playerStatusColor(report.player.status) }}">
+                        <td>
+                            <a data-toggle="collapse" href="#report-{{ report.id }}">+</a>
+
+                            <a href="{{ path('app_cartography', {
+                                galaxy: report.galaxy,
+                                system: report.system,
+                            }) }}">
+                                [{% if report.isMoon %}M:{% endif %}{{ report.coordinates }}]
+                            </a>
+
+                            <div class="collapse" id="report-{{ report.id }}">
+                                <small>{{ report.apiKey }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            {{ ui.playerName(report.player) }}
+                        </td>
+                        <td>
+                            {{ report.totalShip | number_format }}
+                        </td>
+                        <td>
+                            {{ report.totalDefense | number_format }}
+                        </td>
+                        <td>
+                            {{ ui.planetActivity(report.activity) }}
+                        </td>
+                        <td>{{ report.spyAt | format_datetime('short') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

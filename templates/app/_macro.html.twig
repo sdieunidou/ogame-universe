@@ -54,3 +54,13 @@
         {% endfor %}
     </ul>
 {%- endmacro -%}
+
+{%- macro planetActivity(activity) -%}
+    {% if activity == -1 %}
+        <span class="text-danger">{{ activity }}</span>
+    {% elseif activity <= 60 %}
+        <span class="text-warning">{{ activity }}</span>
+    {% else %}
+        <span class="text-success">{{ activity }}</span>
+    {% endif %}
+{%- endmacro -%}

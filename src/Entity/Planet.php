@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Planet
 {
+    const TYPE_PLANET = 1;
+    const TYPE_MOON = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

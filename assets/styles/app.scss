@@ -134,3 +134,17 @@ table tbody tr:last-child td:last-child {
 .list-inline li {
   display: inline-block;
 }
+
+.page-inactive-24h > .d-flex,
+.page-spy > .d-flex {
+  position: relative;
+  z-index: 1000;
+}
+
+.page-spy #DataTables_Table_0_wrapper,
+.page-inactive-24h #DataTables_Table_0_wrapper
+{
+  top: -47px;
+  position: relative;
+  z-index: 999;
+}

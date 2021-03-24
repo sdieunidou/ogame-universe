@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Alliance;
 use App\Entity\Player;
+use App\Entity\Server;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -124,6 +125,19 @@ class PlayerRepository extends ServiceEntityRepository
         return $qb
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function getPlayerOfId(Server $server, int $id): ?Player
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.server = :serverId')
+            ->andWhere('p.ogameId = :playerId')
+            ->setParameter('serverId', $server->getId())
+            ->setParameter('playerId', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }
