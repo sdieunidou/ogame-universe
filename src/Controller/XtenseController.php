@@ -38,9 +38,6 @@ class XtenseController extends AbstractController
         }
 
         $response = new Response();
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET');
-        $response->headers->set('X-Content-Type-Options', 'nosniff');
 
         $startTime = $this->xtense->getMicrotime();
 
