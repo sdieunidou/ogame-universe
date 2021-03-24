@@ -10,6 +10,6 @@ nelmio_cors:
         forced_allow_origin_value: '*'
 
     paths:
-        '^/api/':
+        '^/mod/':
             allow_origin: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
