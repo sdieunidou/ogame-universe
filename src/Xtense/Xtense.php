@@ -60,16 +60,15 @@ class Xtense
         return ((float)$t[1] + (float)$t[0]);
     }
 
-    public function processRequest(string $type, $data, User $user, Server $server): array
+    public function processRequest($requestData, User $user, Server $server): array
     {
         $returnedData = [
             'status' => self::SUCCESS,
-            'type' => $data,
-            // calls[warning,error]
-            // call_messages
         ];
 
-        switch($type) {
+        $data = json_decode($requestData['data'], true);
+
+        switch($requestData['type']) {
             case 'overview':
                 break;
 
