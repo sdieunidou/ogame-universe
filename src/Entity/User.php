@@ -39,6 +39,11 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $xtensePassword;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,5 +123,17 @@ class User implements UserInterface
     public function __toString(): string
     {
         return sprintf('%s', $this->getUsername());
+    }
+
+    public function getXtensePassword(): ?string
+    {
+        return $this->xtensePassword;
+    }
+
+    public function setXtensePassword(string $xtensePassword): self
+    {
+        $this->xtensePassword = $xtensePassword;
+
+        return $this;
     }
 }

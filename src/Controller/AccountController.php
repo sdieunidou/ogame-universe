@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\AccountType;
+use App\Handler\Xtense\TokenGeneratorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,5 +48,19 @@ class AccountController extends AbstractController
         return $this->render('account/account.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    /**
+     * @Route("/my/xtense", name="app_account_xtense")
+     */
+    public function xtense(TokenGeneratorHandler $tokenGeneratorHandler): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (empty($user->getXtensePassword())) {
+            ($tokenGeneratorHandler)($user);
+        }
+
+        return $this->render('account/xtense.html.twig');
     }
 }

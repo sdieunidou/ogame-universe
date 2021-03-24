@@ -72,4 +72,17 @@ class ServerRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function getServerOfOgameId(int $id, string $language): ?Server
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.serverId = :serverId')
+            ->andWhere('s.language = :language')
+            ->setParameter('serverId', $id)
+            ->setParameter('language', $language)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

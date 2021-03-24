@@ -48,4 +48,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult()
         ;
     }
+
+    /**
+     * @param string $token
+     *
+     * @return User|null
+     */
+    public function authenticateUserOfXtense(string $token): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.xtensePassword = :token')
+            ->setParameter('token', $token)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

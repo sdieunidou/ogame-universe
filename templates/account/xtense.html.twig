@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Account' %}
+
+{% block body %}
+    <p>
+        Xtense can be downloaded <a href="https://chrome.google.com/webstore/detail/xtense-gm/mkcgnadlbcakpmmmdfijdekknodapcgl?hl=fr" target="_blank">here</a>.
+    </p>
+
+    <p>
+        Your secret token is:
+        <code>{{ app.user.xtensePassword }}</code>
+    </p>
+{% endblock %}
