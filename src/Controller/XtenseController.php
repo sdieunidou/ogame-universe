@@ -23,6 +23,20 @@ class XtenseController extends AbstractController
      */
     public function endpoint(Request $request): Response
     {
+        $requestData = json_decode($request->getContent(), true);
+
+        if (empty($requestData['universe'])) {
+            throw new XtenseException('"universe" not provided');
+        }
+
+        if (empty($requestData['password'])) {
+            throw new XtenseException('"password" not provided');
+        }
+
+        if (empty($requestData['type'])) {
+            throw new XtenseException('"type" not provided');
+        }
+
         $response = new Response();
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET');
@@ -31,10 +45,10 @@ class XtenseController extends AbstractController
         $startTime = $this->xtense->getMicrotime();
 
         try {
-            $user = $this->xtense->authenticate($request);
-            $server = $this->xtense->resolveServerOfUser($request);
+            $user = $this->xtense->authenticate($requestData['password']);
+            $server = $this->xtense->resolveServerOfUser($requestData['universe']);
 
-            $data = $this->xtense->processRequest($request, $user, $server);
+            $data = $this->xtense->processRequest($requestData['type'], $user, $server);
             $data['execution'] = str_replace(',', '.', round(($this->xtense->getMicrotime() - $startTime) * 1000, 2));
 
             $response->setContent(json_encode($data));

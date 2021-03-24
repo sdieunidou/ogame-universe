@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Repository\ServerRepository;
 use App\Repository\UserRepository;
 use App\Xtense\Exception\XtenseException;
-use Symfony\Component\HttpFoundation\Request;
 
 class Xtense
 {
@@ -28,12 +27,8 @@ class Xtense
         $this->serverRepository = $serverRepository;
     }
 
-    public function authenticate(Request $request): User
+    public function authenticate(string $password): User
     {
-        if (!$password = $request->get('password', false)) {
-            throw new XtenseException('Password not provided');
-        }
-
         $user = $this->userRepository->authenticateUserOfXtense($password);
         if (!$user instanceof User) {
             throw new XtenseException('Invalid user token');
@@ -42,12 +37,8 @@ class Xtense
         return $user;
     }
 
-    public function resolveServerOfUser(Request $request): Server
+    public function resolveServerOfUser(string $universe): Server
     {
-        if (!$universe = $request->get('universe', false)) {
-            throw new XtenseException('Universe not provided');
-        }
-
         $tmp = explode('.', str_replace('https://', '', $universe));
         $tmp = explode('-', mb_substr($tmp[0], 1));
 
@@ -69,12 +60,8 @@ class Xtense
         return ((float)$t[1] + (float)$t[0]);
     }
 
-    public function processRequest(Request $request, User $user, Server $server): array
+    public function processRequest(string $type, User $user, Server $server): array
     {
-        if (!$type = $request->get('type', false)) {
-            throw new XtenseException('Type not provided');
-        }
-
         $returnedData = [
             'status' => self::SUCCESS,
             // calls[warning,error]
