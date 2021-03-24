@@ -44,7 +44,7 @@ class XtenseController extends AbstractController
             $user = $this->xtense->authenticate($requestData['password']);
             $server = $this->xtense->resolveServerOfUser($requestData['univers']);
 
-            $data = $this->xtense->processRequest($requestData['type'], $user, $server);
+            $data = $this->xtense->processRequest($requestData['type'], $requestData['data'], $user, $server);
             $data['execution'] = str_replace(',', '.', round(($this->xtense->getMicrotime() - $startTime) * 1000, 2));
 
             $response->setContent(json_encode($data));
