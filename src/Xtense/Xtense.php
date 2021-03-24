@@ -106,22 +106,23 @@ class Xtense
                 break;
 
             case 'messages':
-                break;
+                switch ($data['type']) {
+                    case 'spy':
+                    case 'spy_shared':
+                        ($this->addSpyReportHandler)($server, $data['ogapilnk']);
+                        $returnedData['type'] = 'spy';
+                        break;
 
-            case 'spy':
-            case 'spy_shared':
-                ($this->addSpyReportHandler)($server, $data['ogapilnk']);
-                $returnedData['type'] = 'spy';
-                break;
+                    case 'ennemy_spy':
+                        break;
 
-            case 'ennemy_spy':
-                break;
+                    case 'rc_cdr':
+                        break;
 
-            case 'rc_cdr':
-                break;
-
-            case 'expedition':
-            case 'expedition_shared':
+                    case 'expedition':
+                    case 'expedition_shared':
+                        break;
+                }
                 break;
 
             default:
