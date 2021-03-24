@@ -4,6 +4,7 @@ namespace App\Xtense;
 
 use App\Entity\Server;
 use App\Entity\User;
+use App\Handler\Spy\AddSpyReportHandler;
 use App\Repository\ServerRepository;
 use App\Repository\UserRepository;
 use App\Xtense\Exception\XtenseException;
@@ -19,12 +20,16 @@ class Xtense
 
     private $serverRepository;
 
+    private $addSpyReportHandler;
+
     public function __construct(
         UserRepository $userRepository,
-        ServerRepository $serverRepository
+        ServerRepository $serverRepository,
+        AddSpyReportHandler $addSpyReportHandler
     ) {
         $this->userRepository = $userRepository;
         $this->serverRepository = $serverRepository;
+        $this->addSpyReportHandler = $addSpyReportHandler;
     }
 
     public function authenticate(string $password): User
@@ -105,6 +110,8 @@ class Xtense
 
             case 'spy':
             case 'spy_shared':
+                ($this->addSpyReportHandler)($server, $data['ogapilnk']);
+                $returnedData['type'] = 'spy';
                 break;
 
             case 'ennemy_spy':
