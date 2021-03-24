@@ -29,7 +29,7 @@ class XtenseController extends AbstractController
         $requestData = json_decode($request->getContent(), true);
 
         try {
-            if (empty($requestData['universe'])) {
+            if (empty($requestData['univers'])) {
                 throw new XtenseException('"universe" not provided');
             }
 
@@ -42,7 +42,7 @@ class XtenseController extends AbstractController
             }
 
             $user = $this->xtense->authenticate($requestData['password']);
-            $server = $this->xtense->resolveServerOfUser($requestData['universe']);
+            $server = $this->xtense->resolveServerOfUser($requestData['univers']);
 
             $data = $this->xtense->processRequest($requestData['type'], $user, $server);
             $data['execution'] = str_replace(',', '.', round(($this->xtense->getMicrotime() - $startTime) * 1000, 2));
