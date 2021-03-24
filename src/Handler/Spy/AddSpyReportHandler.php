@@ -7,6 +7,7 @@ use App\Entity\Player;
 use App\Entity\Server;
 use App\Entity\Spy;
 use App\OGame\DataTransformer\SpyReportDataTransformer;
+use App\Repository\SpyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class AddSpyReportHandler
@@ -15,13 +16,17 @@ final class AddSpyReportHandler
 
     private $entityManager;
 
+    private $spyRepository;
+
     public function __construct(
         SpyReportDataTransformer $spyReportDataTransformer,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SpyRepository $spyRepository
     )
     {
         $this->spyReportDataTransformer = $spyReportDataTransformer;
         $this->entityManager = $entityManager;
+        $this->spyRepository = $spyRepository;
     }
 
     public function __invoke(Server $server, string $apiKey): Spy
@@ -41,7 +46,24 @@ final class AddSpyReportHandler
             ->getPlanetOfCoordinates($server, $data['data']['defender']['planet']['coordinates'])
         ;
 
-        $spy = (new Spy())
+        $totalShipScore = 0;
+        $totalDefenseScore = 0;
+
+        foreach ($data['data']['defender']['defence'] as $defences) {
+            $totalDefenseScore += $defences['count'] *
+                ($defences['technology']['resources']['metal'] + $defences['technology']['resources']['crystal'] + $defences['technology']['resources']['deuterium']);
+        }
+
+        foreach ($data['data']['defender']['ships'] as $ships) {
+            $totalShipScore += $ships['count'] *
+                ($ships['technology']['resources']['metal'] + $ships['technology']['resources']['crystal'] + $ships['technology']['resources']['deuterium']);
+        }
+
+        if (!$spy = $this->spyRepository->getOfApiKey($server, $apiKey)) {
+            $spy = (new Spy());
+        }
+
+        $spy = $spy
             ->setApiKey($apiKey)
             ->setServer($server)
             ->setData($data)
@@ -51,9 +73,11 @@ final class AddSpyReportHandler
             ->setLootPercentage($data['data']['loot_percentage'])
             ->setTotalDefense($data['data']['total_defense_count'])
             ->setTotalShip($data['data']['total_ship_count'])
+            ->setTotalShipScore($totalShipScore)
+            ->setTotalDefenseScore($totalDefenseScore)
 
             ->setPlayer($player)
-            ->setPlayerId($data['data']['defender']['id'])
+            ->setPlayerOgameId($data['data']['defender']['id'])
             ->setPlayerName($data['data']['defender']['name'])
             ->setPlayerClass($data['data']['defender']['class'])
 
@@ -63,17 +87,17 @@ final class AddSpyReportHandler
             ->setSystem($data['data']['defender']['planet']['system'])
             ->setPosition($data['data']['defender']['planet']['position'])
             ->setIsMoon($data['data']['defender']['planet']['type'] === Planet::TYPE_MOON)
+
+            ->setMetal($data['data']['defender']['resources']['metal'])
+            ->setCrystal($data['data']['defender']['resources']['crystal'])
+            ->setDeuterium($data['data']['defender']['resources']['deuterium'])
+            ->setEnergy($data['data']['defender']['resources']['energy'])
         ;
 
-        /*
-        dump(
-            $data,
-            $spy
-        );
-        die;
-         */
+        if (null === $spy->getId()) {
+            $this->entityManager->persist($spy);
+        }
 
-        $this->entityManager->persist($spy);
         $this->entityManager->flush();
 
         return $spy;

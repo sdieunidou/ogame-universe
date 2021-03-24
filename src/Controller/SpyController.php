@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Form\GalaxyType;
 use App\Form\SpyReportType;
 use App\Handler\Spy\AddSpyReportHandler;
-use App\OGame\DataTransformer\SpyReportDataTransformer;
 use App\Repository\SpyRepository;
 use App\Server\CurrentServerResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,12 +35,22 @@ class SpyController extends AbstractController
         $form = $this->createForm(SpyReportType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $apiKey = $form->get('report')->getData();
+        $formFilter = $this->container->get('form.factory')->createNamed(
+            '',
+            GalaxyType::class,
+            [],
+            [
+                'method' => 'GET',
+                'csrf_protection' => false,
+                'server' => $server,
+            ]
+        );
+        $formFilter->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
             ($addSpyReportHandler)(
                 $server,
-                $apiKey
+                $form->get('report')->getData()
             );
 
             $this->addFlash('success', 'Spy report has been added!');
@@ -48,11 +58,12 @@ class SpyController extends AbstractController
             return $this->redirectToRoute('app_spy');
         }
 
-        $reports = $this->spyRepository->getOfServer($server);
+        $reports = $this->spyRepository->getOfServer($server, $formFilter->get('galaxy')->getData());
 
         return $this->render('spy/list.html.twig', [
             'reports' => $reports,
             'form' => $form->createView(),
+            'formFilter' => $formFilter->createView(),
         ]);
     }
 }

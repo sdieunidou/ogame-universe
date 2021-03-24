@@ -22,17 +22,48 @@ class SpyRepository extends ServiceEntityRepository
 
     /**
      * @param Server $server
+     * @param int|null $galaxy
      *
      * @return Spy[] Returns an array of Spy objects
      */
-    public function getOfServer(Server $server): array
+    public function getOfServer(Server $server, ?int $galaxy = null): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('s.server = :serverId')
+            ->setParameter('serverId', $server->getId())
+            ->orderBy('s.spyAt', 'DESC')
+        ;
+
+        if (null !== $galaxy) {
+            $qb
+                ->andWhere('s.galaxy = :galaxy')
+                ->setParameter('galaxy', $galaxy)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Server $server
+     * @param string $apiKey
+     *
+     * @return Spy|null
+     */
+    public function getOfApiKey(Server $server, string $apiKey): ?Spy
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.server = :serverId')
+            ->andWhere('s.apiKey = :apiKey')
             ->setParameter('serverId', $server->getId())
+            ->setParameter('apiKey', $apiKey)
             ->orderBy('s.id', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 }

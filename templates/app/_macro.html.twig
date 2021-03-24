@@ -11,7 +11,7 @@
         <small><a href="{{ path('app_alliance_view', {id: player.alliance.id}) }}">[{{ player.alliance }}]</a></small>
     {% endif %}
 
-    {{ player.name }}
+    <span class="player-name">{{ player.name }}</span>
 
     {% if not player.isActive %}
         <small>({{ player.status }})</small>

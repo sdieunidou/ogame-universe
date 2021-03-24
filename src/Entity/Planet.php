@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Planet
 {
     const TYPE_PLANET = 1;
+    const TYPE_DEBRIS = 2;
     const TYPE_MOON = 3;
 
     /**

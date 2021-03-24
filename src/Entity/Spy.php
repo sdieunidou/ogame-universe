@@ -46,7 +46,7 @@ class Spy
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $playerId;
+    private $playerOgameId;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -94,14 +94,24 @@ class Spy
     private $galaxy;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $totalShip;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $totalDefense;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $totalShipScore;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $totalDefenseScore;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -114,22 +124,22 @@ class Spy
     private $spyAt;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $metal;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $crystal;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $deuterium;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      */
     private $energy;
 
@@ -162,14 +172,14 @@ class Spy
         return $this;
     }
 
-    public function getPlayerId(): ?int
+    public function getPlayerOgameId(): ?int
     {
-        return $this->playerId;
+        return $this->playerOgameId;
     }
 
-    public function setPlayerId(?int $playerId): self
+    public function setPlayerOgameId(?int $playerOgameId): self
     {
-        $this->playerId = $playerId;
+        $this->playerOgameId = $playerOgameId;
 
         return $this;
     }
@@ -290,6 +300,30 @@ class Spy
     public function setTotalDefense(?int $totalDefense): self
     {
         $this->totalDefense = $totalDefense;
+
+        return $this;
+    }
+
+    public function getTotalShipScore(): ?int
+    {
+        return $this->totalShipScore;
+    }
+
+    public function setTotalShipScore(?int $totalShipScore): self
+    {
+        $this->totalShipScore = $totalShipScore;
+
+        return $this;
+    }
+
+    public function getTotalDefenseScore(): ?int
+    {
+        return $this->totalDefenseScore;
+    }
+
+    public function setTotalDefenseScore(?int $totalDefenseScore): self
+    {
+        $this->totalDefenseScore = $totalDefenseScore;
 
         return $this;
     }

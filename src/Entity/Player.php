@@ -30,6 +30,11 @@ class Player
     const STATUS_BANNED_LONG_INACTIVE = 'vIb';
     const STATUS_HONORABLE = 'o';
 
+    const CLASS_NOT_SET = 0;
+    const CLASS_COLLECTOR = 1;
+    const CLASS_GENERAL = 2;
+    const CLASS_DISCOVER = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -93,11 +93,11 @@ table thead th:last-child {
   border-radius: 0 10px 0 0 !important;
 }
 
-table tbody tr:last-child td:first-child {
+table.table-data tbody > tr:last-child > td:first-child {
   border-radius: 0 0 0 10px;
 }
 
-table tbody tr:last-child td:last-child {
+table.table-data tbody > tr:last-child > td:last-child {
   border-radius: 0 0 10px 0;
 }
 
@@ -147,4 +147,13 @@ table tbody tr:last-child td:last-child {
   top: -47px;
   position: relative;
   z-index: 999;
+}
+
+.page-spy .player-name {
+  font-size: 12.8px;
+}
+
+.page-spy .table-data td[colspan="10"] {
+  padding: 0;
+  border-radius: 0;
 }

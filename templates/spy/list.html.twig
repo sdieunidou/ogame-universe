@@ -21,49 +21,195 @@
 
                 <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Add Spy Report</button>
             {{ form_end(form) }}
+
+            <div class="ml-3">
+                {{ form_start(formFilter, {
+                    attr: {
+                        class: 'form-inline'
+                    }
+                }) }}
+                <div class="form-group">
+                    {{ form_row(formFilter.galaxy, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Filter!</button>
+                {{ form_end(formFilter) }}
+            </div>
         </div>
 
-        <table class="table table-striped mt-3 table-dark table-data display responsive">
+        <table class="table table-sm table-striped mt-3 table-dark table-data display responsive">
             <thead class="thead-dark">
                 <tr>
-                    <th>Target</th>
+                    <th>Coord</th>
                     <th>Player</th>
-                    <th>Nb. Ships</th>
-                    <th>Nb. Defense</th>
-                    <th>Activity</th>
+                    <th>Acti</th>
+                    <th>Ships</th>
+                    <th>Def</th>
+                    <th>M</th>
+                    <th>C</th>
+                    <th>D</th>
+                    <th>%</th>
                     <th>Spy At</th>
                 </tr>
             </thead>
             <tbody>
                 {% for report in reports %}
                     <tr class="{{ ui.playerStatusColor(report.player.status) }}">
-                        <td>
-                            <a data-toggle="collapse" href="#report-{{ report.id }}">+</a>
+                        <td class="details-control" data-full="report-{{ report.id }}">
+                            <a href="#" class="mr-2">+</a>
 
-                            <a href="{{ path('app_cartography', {
-                                galaxy: report.galaxy,
-                                system: report.system,
-                            }) }}">
-                                [{% if report.isMoon %}M:{% endif %}{{ report.coordinates }}]
-                            </a>
+                            <small>
+                                <a href="{{ path('app_cartography', {
+                                    galaxy: report.galaxy,
+                                    system: report.system,
+                                }) }}">
+                                    [{% if report.isMoon %}M:{% endif %}{{ report.coordinates }}]
+                                </a>
 
-                            <div class="collapse" id="report-{{ report.id }}">
-                                <small>{{ report.apiKey }}</small>
+                                <a href="https://trashsim.universeview.be/fr?SR_KEY={{ report.apiKey }}" target="_blank"><small>Trashim</small></a>
+                            </small>
+
+                            <div style="display: none" id="report-{{ report.id }}">
+                                <table class="table table-sm table-striped table-dark">
+                                    <tbody>
+                                        <tr>
+                                            <td><small><b>API Key</b></small></td>
+                                            <td colspan="3"><small>{{ report.apiKey }}</small></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><small><b>Spied by</b></small></td>
+                                            <td colspan="3"><small>{{ report.data.data.attacker.name }} from <a href="{{ path('app_cartography', {
+                                                        galaxy: report.data.data.attacker.planet.galaxy,
+                                                        system: report.data.data.attacker.planet.system,
+                                                    }) }}">[{{ report.data.data.attacker.planet.coordinates }}]</a></small></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><small><b>Player Class</b></small></td>
+                                            <td colspan="3"><small>{{ ogame_label_player_class(report.playerClass) | title }}</small></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width: 25%; padding: 15px;">
+                                                <small><b>Flottes</b></small>
+                                                <small>({{ report.totalShip | number_format }} ships)</small>
+
+                                                {% if report.data.data.defender.ships is defined %}
+                                                <table class="table table-sm table-striped table-dark mt-2">
+                                                    <tbody>
+                                                    {% for shipId, shipData in report.data.data.defender.ships %}
+                                                        <tr>
+                                                            <td>
+                                                                <small>{{ ogame_label_type(shipId) }}</small>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <small>{{ shipData.count|number_format }}</small>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                {% endif %}
+                                            </td>
+
+                                            <td style="width: 25%; padding: 15px;">
+                                                <small><b>Defence</b></small>
+                                                <small>({{ report.totalDefense | number_format }} defences)</small>
+
+                                                {% if report.data.data.defender.defence is defined %}
+                                                    <table class="table table-sm table-striped table-dark mt-2">
+                                                        <tbody>
+                                                        {% for defenceId, defenceData in report.data.data.defender.defence %}
+                                                            <tr>
+                                                                <td>
+                                                                    <small>{{ ogame_label_type(defenceId) }}</small>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <small>{{ defenceData.count|number_format }}</small>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% endif %}
+                                            </td>
+
+                                            <td style="width: 25%; padding: 15px;">
+                                                <small><b>Building</b></small>
+                                                {% if report.data.data.defender.buildings is defined %}
+                                                    <table class="table table-sm table-striped table-dark mt-2">
+                                                        <tbody>
+                                                        {% for buildingId, buildingData in report.data.data.defender.buildings %}
+                                                            <tr>
+                                                                <td>
+                                                                    <small>{{ ogame_label_type(buildingId) }}</small>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <small>{{ buildingData.level }}</small>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% endif %}
+                                            </td>
+
+                                            <td style="width: 25%; padding: 15px;">
+                                                <small><b>Research</b></small>
+                                                {% if report.data.data.defender.research is defined %}
+                                                    <table class="table table-sm table-striped table-dark mt-2">
+                                                        <tbody>
+                                                        {% for researchId, researchData in report.data.data.defender.research %}
+                                                            <tr>
+                                                                <td>
+                                                                    <small>{{ ogame_label_type(researchId) }}</small>
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    <small>{{ researchData.level }}</small>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </td>
                         <td>
                             {{ ui.playerName(report.player) }}
                         </td>
                         <td>
-                            {{ report.totalShip | number_format }}
+                            <small>{{ ui.planetActivity(report.activity) }}</small>
                         </td>
                         <td>
-                            {{ report.totalDefense | number_format }}
+                            <small>{{ (report.totalShipScore / 1000000) | number_format }}M</small>
                         </td>
                         <td>
-                            {{ ui.planetActivity(report.activity) }}
+                            <small>{{ (report.totalDefenseScore / 1000000) | number_format }}M</small>
                         </td>
-                        <td>{{ report.spyAt | format_datetime('short') }}</td>
+                        <td>
+                            <small>{{ (report.metal / 1000000) | number_format }}M</small>
+                        </td>
+                        <td>
+                            <small>{{ (report.crystal / 1000000) | number_format }}M</small>
+                        </td>
+                        <td>
+                            <small>{{ (report.deuterium / 1000000) | number_format }}M</small>
+                        </td>
+                        <td>
+                            <small class="{% if report.lootPercentage > 50 %}text-success{% endif %}">{{ report.lootPercentage }}%</small>
+                        </td>
+                        <td>
+                            <small>{{ report.spyAt.format('d/m H:i:s') }}</small>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

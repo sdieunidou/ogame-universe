@@ -89,11 +89,10 @@
         </nav>
     </header>
 
-    <!-- Begin page content -->
     <main role="main" class="container">
         {% for label, messages in app.flashes(['success', 'error']) %}
             {% for message in messages %}
-                <div class="alert alert-{{ label }} mt-5">
+                <div class="alert alert-{{ label }}">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -101,13 +100,5 @@
 
         {% block body '' %}
     </main>
-
-    {#
-    <footer class="footer">
-        <div class="container">
-            <span class="text-muted">Place sticky footer content here.</span>
-        </div>
-    </footer>
-    #}
 </body>
 </html>
