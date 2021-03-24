@@ -66,4 +66,20 @@ class SpyRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function getLatestSpyReportOf(Server $server, string $coordinates, bool $isMoon = false): ?Spy
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.server = :serverId')
+            ->andWhere('s.coordinates = :coords')
+            ->andWhere('s.isMoon = :isMoon')
+            ->setParameter('serverId', $server->getId())
+            ->setParameter('coords', $coordinates)
+            ->setParameter('isMoon', $isMoon)
+            ->orderBy('s.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

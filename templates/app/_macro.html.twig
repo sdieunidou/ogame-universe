@@ -11,7 +11,7 @@
         <small><a href="{{ path('app_alliance_view', {id: player.alliance.id}) }}">[{{ player.alliance }}]</a></small>
     {% endif %}
 
-    <span class="player-name">{{ player.name }}</span>
+    <span class="player-name"><a class="player-link player-status-{{ player.status }}" href="{{ path('app_player_view', {id: player.id}) }}">{{ player.name }}</a></span>
 
     {% if not player.isActive %}
         <small>({{ player.status }})</small>
@@ -57,10 +57,136 @@
 
 {%- macro planetActivity(activity) -%}
     {% if activity == -1 %}
-        <span class="text-danger">{{ activity }}</span>
+        <span class="text-danger">*</span>
     {% elseif activity <= 60 %}
         <span class="text-warning">{{ activity }}</span>
     {% else %}
         <span class="text-success">{{ activity }}</span>
     {% endif %}
+{%- endmacro -%}
+
+{%- macro showSpyReport(report) -%}
+    <table class="table table-sm table-striped table-dark">
+        <tbody>
+            <tr>
+                <td><small><b>Coords</b></small></td>
+                <td colspan="3">
+                    <small>
+                        <a href="{{ path('app_cartography', {
+                            galaxy: report.galaxy,
+                            system: report.system,
+                        }) }}">
+                            [{% if report.isMoon %}M:{% endif %}{{ report.coordinates }}]
+                        </a>
+
+                        <a href="https://trashsim.universeview.be/fr?SR_KEY={{ report.apiKey }}" target="_blank"><small>Trashim</small></a>
+                    </small>
+                </td>
+            </tr>
+
+            <tr>
+                <td><small><b>API Key</b></small></td>
+                <td colspan="3"><small>{{ report.apiKey }}</small></td>
+            </tr>
+
+            <tr>
+                <td><small><b>Spied by</b></small></td>
+                <td colspan="3"><small>{{ report.data.data.attacker.name }} from <a href="{{ path('app_cartography', {
+                            galaxy: report.data.data.attacker.planet.galaxy,
+                            system: report.data.data.attacker.planet.system,
+                        }) }}">[{{ report.data.data.attacker.planet.coordinates }}]</a></small></td>
+            </tr>
+
+            <tr>
+                <td><small><b>Player Class</b></small></td>
+                <td colspan="3"><small>{{ ogame_label_player_class(report.playerClass) | title }}</small></td>
+            </tr>
+
+            <tr>
+                <td style="width: 25%; padding: 15px;">
+                    <small><b>Flottes</b></small>
+                    <small>({{ report.totalShip | number_format }} ships)</small>
+
+                    {% if report.data.data.defender.ships is defined %}
+                        <table class="table table-sm table-striped table-dark mt-2">
+                            <tbody>
+                            {% for shipId, shipData in report.data.data.defender.ships %}
+                                <tr>
+                                    <td>
+                                        <small>{{ ogame_label_type(shipId) }}</small>
+                                    </td>
+                                    <td class="text-right">
+                                        <small>{{ shipData.count|number_format }}</small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </td>
+
+                <td style="width: 25%; padding: 15px;">
+                    <small><b>Defence</b></small>
+                    <small>({{ report.totalDefense | number_format }} defences)</small>
+
+                    {% if report.data.data.defender.defence is defined %}
+                        <table class="table table-sm table-striped table-dark mt-2">
+                            <tbody>
+                            {% for defenceId, defenceData in report.data.data.defender.defence %}
+                                <tr>
+                                    <td>
+                                        <small>{{ ogame_label_type(defenceId) }}</small>
+                                    </td>
+                                    <td class="text-right">
+                                        <small>{{ defenceData.count|number_format }}</small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </td>
+
+                <td style="width: 25%; padding: 15px;">
+                    <small><b>Building</b></small>
+                    {% if report.data.data.defender.buildings is defined %}
+                        <table class="table table-sm table-striped table-dark mt-2">
+                            <tbody>
+                            {% for buildingId, buildingData in report.data.data.defender.buildings %}
+                                <tr>
+                                    <td>
+                                        <small>{{ ogame_label_type(buildingId) }}</small>
+                                    </td>
+                                    <td class="text-right">
+                                        <small>{{ buildingData.level }}</small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </td>
+
+                <td style="width: 25%; padding: 15px;">
+                    <small><b>Research</b></small>
+                    {% if report.data.data.defender.research is defined %}
+                        <table class="table table-sm table-striped table-dark mt-2">
+                            <tbody>
+                            {% for researchId, researchData in report.data.data.defender.research %}
+                                <tr>
+                                    <td>
+                                        <small>{{ ogame_label_type(researchId) }}</small>
+                                    </td>
+                                    <td class="text-right">
+                                        <small>{{ researchData.level }}</small>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 {%- endmacro -%}

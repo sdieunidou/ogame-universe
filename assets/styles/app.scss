@@ -106,29 +106,29 @@ table.table-data tbody > tr:last-child > td:last-child {
 }
 
 .player-status-a {
-  color: red;
+  color: red !important;
 }
 
 .player-status-vb,
 .player-status-vib,
 .player-status-vIb {
-  color: #7e7e7e;
+  color: #7e7e7e !important;
   text-decoration: line-through;
 }
 
 .player-status-i,
 .player-status-I {
-  color: #6c757d;
+  color: #6c757d !important;
 }
 
 .player-status-o {
-  color: #F3F;
+  color: #F3F !important;
 }
 
 .player-status-v,
 .player-status-vi,
 .player-status-vI {
-  color: #0ff;
+  color: #0ff !important;
 }
 
 .list-inline li {
@@ -156,4 +156,8 @@ table.table-data tbody > tr:last-child > td:last-child {
 .page-spy .table-data td[colspan="10"] {
   padding: 0;
   border-radius: 0;
+}
+
+.player-link {
+  color: #FFFFFF;
 }

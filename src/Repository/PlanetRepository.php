@@ -81,7 +81,7 @@ class PlanetRepository extends ServiceEntityRepository
     public function getPlanetsOfAllianceOfGalaxy(Server $server, Alliance $alliance, int $galaxy): array
     {
         return $this->createQueryBuilder('p')
-            ->select('p.name, p.hasMoon, p.coordinates, p.system, p.galaxy, p.moonSize, pl.name as playerName')
+            ->select('p.name, p.hasMoon, p.coordinates, p.system, p.galaxy, p.moonSize, pl.name as playerName, pl.id as playerId')
             ->innerJoin('p.player', 'pl')
             ->innerJoin('pl.alliance', 'a')
             ->andWhere('pl.alliance = :allianceId')

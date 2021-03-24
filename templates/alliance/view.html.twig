@@ -62,7 +62,7 @@
                                             [{% if planet.hasMoon %}M:{% endif %}{{ planet.coordinates }}]
                                     </a>
 
-                                    {{ planet.playerName }}
+                                    <a class="player-link" href="{{ path('app_player_view', {id: planet.playerId}) }}">{{ planet.playerName }}</a>
                                 </li>
                             {% endfor %}
                         </ul>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Player;
 use App\Form\PlayersInactivesType;
 use App\Repository\PlayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,6 +61,16 @@ class PlayerController extends AbstractController
         return $this->render('player/list_24h.html.twig', [
             'form' => $form->createView(),
             'players' => $players,
+        ]);
+    }
+
+    /**
+     * @Route("/players/{id}", name="app_player_view")
+     */
+    public function view(Player $player): Response
+    {
+        return $this->render('player/view.html.twig', [
+            'player' => $player,
         ]);
     }
 }
