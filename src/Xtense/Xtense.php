@@ -118,7 +118,7 @@ class Xtense
                 break;
 
             default:
-                throw new XtenseException(sprintf('Type "%s" not managed', $type));
+                throw new XtenseException(sprintf('Type "%s" not managed', $requestData['type']));
         }
 
         return $returnedData;
