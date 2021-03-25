@@ -133,16 +133,14 @@ final class UpdateSystemFromXtenseHandler
                     $planet->setActivityAt($activityAt);
                 }
 
-                if (null !== $planet->getActivity()) {
-                    $planetActivity = (new PlanetActivity())
-                        ->setPlanet($planet)
-                        ->setActivity($planet->getActivity())
-                        ->setActivityAt($planet->getActivityAt())
-                        ->setDebrisMetal($data['debris']['metal'])
-                        ->setDebrisCrystal($data['debris']['cristal']);
+                $planetActivity = (new PlanetActivity())
+                    ->setPlanet($planet)
+                    ->setActivity($planet->getActivity())
+                    ->setActivityAt($planet->getActivityAt())
+                    ->setDebrisMetal($data['debris']['metal'])
+                    ->setDebrisCrystal($data['debris']['cristal']);
 
-                    $planet->addActivity($planetActivity);
-                }
+                $planet->addActivity($planetActivity);
             }
 
             if (is_numeric($data['activityMoon'])) {
@@ -158,17 +156,15 @@ final class UpdateSystemFromXtenseHandler
                     $planet->setMoonActivityAt($activityAt);
                 }
 
-                if (null !== $planet->getMoonActivity()) {
-                    $moonActivity = (new PlanetActivity())
-                        ->setPlanet($planet)
-                        ->setMoonActivity($planet->getMoonActivity())
-                        ->setMoonActivityAt($planet->getMoonActivityAt())
-                        ->setDebrisMetal($data['debris']['metal'])
-                        ->setDebrisCrystal($data['debris']['cristal'])
-                    ;
+                $moonActivity = (new PlanetActivity())
+                    ->setPlanet($planet)
+                    ->setMoonActivity($planet->getMoonActivity())
+                    ->setMoonActivityAt($planet->getMoonActivityAt())
+                    ->setDebrisMetal($data['debris']['metal'])
+                    ->setDebrisCrystal($data['debris']['cristal'])
+                ;
 
-                    $planet->addActivity($moonActivity);
-                }
+                $planet->addActivity($moonActivity);
             }
 
             $planet->setLatestXtenseReportAt($now);
