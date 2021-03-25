@@ -32,7 +32,7 @@ class UpdateSpyReportsCommand extends Command
         $reports = $this->spyRepository->findAll();
 
         $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Starting to update reports (%d servers)', \count($reports)));
+        $io->title(sprintf('Starting to update %d reports', \count($reports)));
 
         foreach ($reports as $report) {
             ($this->addSpyReportHandler)($report->getServer(), $report->getApiKey());

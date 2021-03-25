@@ -126,7 +126,21 @@ class PlanetRepository extends ServiceEntityRepository
             ->setParameter('coords', $coordinates)
             ->setParameter('serverId', $server->getId())
             ->setMaxResults(1)
-            ->groupBy('p.galaxy')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function getPlanetOfOgameIdAndPlayerId(Server $server, int $ogameId, int $playerId): ?Planet
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.ogameId = :ogameId')
+            ->andWhere('p.server = :serverId')
+            ->andWhere('p.player = :playerId')
+            ->setParameter('ogameId', $ogameId)
+            ->setParameter('playerId', $playerId)
+            ->setParameter('serverId', $server->getId())
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;

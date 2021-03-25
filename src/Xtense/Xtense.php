@@ -5,6 +5,7 @@ namespace App\Xtense;
 use App\Entity\Server;
 use App\Entity\User;
 use App\Handler\Spy\AddSpyReportHandler;
+use App\Handler\System\UpdateSystemFromXtenseHandler;
 use App\Repository\ServerRepository;
 use App\Repository\UserRepository;
 use App\Xtense\Exception\XtenseException;
@@ -22,14 +23,18 @@ class Xtense
 
     private $addSpyReportHandler;
 
+    private $updateSystemHandler;
+
     public function __construct(
         UserRepository $userRepository,
         ServerRepository $serverRepository,
-        AddSpyReportHandler $addSpyReportHandler
+        AddSpyReportHandler $addSpyReportHandler,
+        UpdateSystemFromXtenseHandler $updateSystemHandler
     ) {
         $this->userRepository = $userRepository;
         $this->serverRepository = $serverRepository;
         $this->addSpyReportHandler = $addSpyReportHandler;
+        $this->updateSystemHandler = $updateSystemHandler;
     }
 
     public function authenticate(string $password): User
@@ -93,6 +98,8 @@ class Xtense
                 break;
 
             case 'system':
+                ($this->updateSystemHandler)($server, $data);
+                $returnedData['type'] = 'system';
                 break;
 
             case 'ranking':
