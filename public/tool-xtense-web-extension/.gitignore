@@ -7,6 +7,5 @@ node_modules
 .idea/vcs.xml
 .idea/workspace.xml
 
-release/
 extension/contribs/jquery.min.js
 extension/contribs/loglevel.min.js
