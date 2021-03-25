@@ -51,11 +51,17 @@ final class UpdateSystemFromXtenseHandler
                 continue;
             }
 
+            $coords = sprintf('%d:%d:%d', $galaxy, $system, $position);
+
             if (empty($data) || empty($data['planet_id']) || empty($data['player_id'])) {
+                // check if a planet exist in DB, maybe destroyed
+                $oldPlanet = $this->planetRepository->getPlanetOfCoordinates($server, $coords);
+                if ($oldPlanet instanceof Planet) {
+                    $this->entityManager->remove($oldPlanet);
+                }
+
                 continue;
             }
-
-            $coords = sprintf('%d:%d:%d', $galaxy, $system, $position);
 
             $player = $this->playerRepository->findOneBy([
                 'server' => $server->getId(),
