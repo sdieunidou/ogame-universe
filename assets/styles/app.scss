@@ -135,12 +135,15 @@ table.table-data tbody > tr:last-child > td:last-child {
   display: inline-block;
 }
 
+.page-galaxy > .d-flex,
 .page-inactive-24h > .d-flex,
 .page-spy > .d-flex {
   position: relative;
   z-index: 1000;
+  width: 80%;
 }
 
+.page-galaxy #DataTables_Table_0_wrapper,
 .page-spy #DataTables_Table_0_wrapper,
 .page-inactive-24h #DataTables_Table_0_wrapper
 {

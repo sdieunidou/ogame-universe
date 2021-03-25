@@ -12,107 +12,109 @@
 {% endmacro %}
 
 {% block body %}
-    <div class="d-flex justify-content-cente mb-3 form-coordinates">
-        {{ form_start(form, {
-            attr: {
-                class: 'form-inline'
-            }
-        }) }}
-            {{ _self.pagination(galaxy, system) }}
+    <div class="page-galaxy">
+        <div class="d-flex justify-content-cente mb-3 form-coordinates">
+            {{ form_start(form, {
+                attr: {
+                    class: 'form-inline'
+                }
+            }) }}
+                {{ _self.pagination(galaxy, system) }}
 
-            <div class="form-group">
-                {{ form_widget(form.galaxy, {
-                    attr: {
-                        class: 'form-control-sm mr-1 ml-2'
-                    }
-                }) }}
+                <div class="form-group">
+                    {{ form_widget(form.galaxy, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
 
-                {{ form_widget(form.system, {
-                    attr: {
-                        class: 'form-control-sm'
-                    }
-                }) }}
-            </div>
+                    {{ form_widget(form.system, {
+                        attr: {
+                            class: 'form-control-sm'
+                        }
+                    }) }}
+                </div>
 
-            <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">GO</button>
-        {{ form_end(form) }}
-    </div>
+                <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">GO</button>
+            {{ form_end(form) }}
+        </div>
 
-    <table class="table table-striped table-dark table-sm table-data">
-        <caption>
-            {{ _self.pagination(galaxy, system) }}
-        </caption>
-        <thead>
-            <tr>
-                <th>Coords</th>
-                <th>Moon</th>
-                <th>Name</th>
-                <th>Player</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for planet in planets %}
-                {% if planet.position is defined %}
-                    {% set spyReport = latest_spy_report_of(planet.coordinates) %}
-                    {% set spyReportMoon = latest_spy_report_of(planet.coordinates, true) %}
+        <table class="table table-striped table-dark table-sm table-data">
+            <caption>
+                {{ _self.pagination(galaxy, system) }}
+            </caption>
+            <thead>
+                <tr>
+                    <th>Coords</th>
+                    <th>Moon</th>
+                    <th>Name</th>
+                    <th>Player</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for planet in planets %}
+                    {% if planet.position is defined %}
+                        {% set spyReport = latest_spy_report_of(planet.coordinates) %}
+                        {% set spyReportMoon = latest_spy_report_of(planet.coordinates, true) %}
 
-                    <tr class="{{ ui.playerStatusColor(planet.player.status) }}">
-                        <td {% if spyReport is not none %}class="details-control" data-full="report-{{ spyReport.id }}"{% endif %}>
-                            {% if spyReport is not none %}
-                                <a href="#">+</a>
-                            {% endif %}
-
-                            [{{ galaxy }}:{{ system }}:{{ loop.index }}]
-
-                            {% if spyReport is not none %}
-                                <span data-toggle="tooltip" data-placement="bottom" title="{{ spyReport.spyAt | format_time }}">
-                                    {{ ui.planetActivity(spyReport.activity) }}
-                                </span>
-
-                                <div style="display: none" id="report-{{ spyReport.id }}">
-                                    {{ ui.showSpyReport(spyReport) }}
-                                </div>
-                            {% endif %}
-                        </td>
-                        <td {% if spyReportMoon is not none %}class="details-control" data-full="report-{{ spyReportMoon.id }}"{% endif %}>
-                            {% if planet.hasMoon %}
-                                {% if spyReportMoon is not none %}
+                        <tr class="{{ ui.playerStatusColor(planet.player.status) }}">
+                            <td {% if spyReport is not none %}class="details-control" data-full="report-{{ spyReport.id }}"{% endif %}>
+                                {% if spyReport is not none %}
                                     <a href="#">+</a>
                                 {% endif %}
 
-                                <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
+                                [{{ galaxy }}:{{ system }}:{{ loop.index }}]
 
-                                {% if spyReportMoon is not none %}
-                                    <span data-toggle="tooltip" data-placement="bottom" title="{{ spyReportMoon.spyAt | format_time }}">
-                                        {{ ui.planetActivity(spyReportMoon.activity) }}
+                                {% if spyReport is not none %}
+                                    <span data-toggle="tooltip" data-placement="bottom" title="{{ spyReport.spyAt | format_time }}">
+                                        {{ ui.planetActivity(spyReport.activity) }}
                                     </span>
 
-                                    <div style="display: none" id="report-{{ spyReportMoon.id }}">
-                                        {{ ui.showSpyReport(spyReportMoon) }}
+                                    <div style="display: none" id="report-{{ spyReport.id }}">
+                                        {{ ui.showSpyReport(spyReport) }}
                                     </div>
                                 {% endif %}
+                            </td>
+                            <td {% if spyReportMoon is not none %}class="details-control" data-full="report-{{ spyReportMoon.id }}"{% endif %}>
+                                {% if planet.hasMoon %}
+                                    {% if spyReportMoon is not none %}
+                                        <a href="#">+</a>
+                                    {% endif %}
 
-                                <small>
-                                    {{ planet.moonSize | number_format }}km
-                                </small>
-                            {% endif %}
-                        </td>
-                        <td>{{ planet.name }}</td>
-                        <td>
-                            {{ ui.playerName(planet.player) }}
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>
-                            [{{ galaxy }}:{{ system }}:{{ loop.index }}]
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+                                    <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
+
+                                    {% if spyReportMoon is not none %}
+                                        <span data-toggle="tooltip" data-placement="bottom" title="{{ spyReportMoon.spyAt | format_time }}">
+                                            {{ ui.planetActivity(spyReportMoon.activity) }}
+                                        </span>
+
+                                        <div style="display: none" id="report-{{ spyReportMoon.id }}">
+                                            {{ ui.showSpyReport(spyReportMoon) }}
+                                        </div>
+                                    {% endif %}
+
+                                    <small>
+                                        {{ planet.moonSize | number_format }}km
+                                    </small>
+                                {% endif %}
+                            </td>
+                            <td>{{ planet.name }}</td>
+                            <td>
+                                {{ ui.playerName(planet.player) }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>
+                                [{{ galaxy }}:{{ system }}:{{ loop.index }}]
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
