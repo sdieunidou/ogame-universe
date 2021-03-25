@@ -39,12 +39,10 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            if (empty($user->getXtensePassword())) {
-                ($tokenGeneratorHandler)($user);
-            }
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+
+            ($tokenGeneratorHandler)($user);
             $entityManager->flush();
 
             $this->addFlash('success', 'Inscription réussie, vous pouvez vous identifier.');
