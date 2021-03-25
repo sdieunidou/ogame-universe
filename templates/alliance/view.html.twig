@@ -55,11 +55,15 @@
                         <ul class="list-unstyled">
                             {% for planet in planets_of_alliance_of_galaxy(alliance, galaxy) %}
                                 <li>
+                                    {% if planet.hasMoon %}
+                                        <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
+                                    {% endif %}
+
                                     <a href="{{ path('app_cartography', {
                                         galaxy: planet.galaxy,
                                         system: planet.system,
                                     }) }}">
-                                            [{% if planet.hasMoon %}M:{% endif %}{{ planet.coordinates }}]
+                                            [{{ planet.coordinates }}]
                                     </a>
 
                                     <a class="player-link" href="{{ path('app_player_view', {id: planet.playerId}) }}">{{ planet.playerName }}</a>

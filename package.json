@@ -1,5 +1,7 @@
 {
-    "devDependencies": {},
+    "devDependencies": {
+        "file-loader": "^6.0.0"
+    },
     "license": "UNLICENSED",
     "private": true,
     "scripts": {

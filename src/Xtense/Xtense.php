@@ -110,7 +110,7 @@ class Xtense
                     case 'spy':
                     case 'spy_shared':
                         $spy = ($this->addSpyReportHandler)($server, $data['ogapilnk']);
-                        
+
                         $returnedData['type'] = 'spy';
                         $returnedData['apiKey'] = $data['ogapilnk'];
                         $returnedData['reportId'] = $spy->getId();

@@ -60,9 +60,13 @@
                 {% for report in reports %}
                     <tr class="{{ ui.playerStatusColor(report.player.status) }}">
                         <td class="details-control" data-full="report-{{ report.id }}">
-                            <a href="#" class="mr-2">+</a>
+                            <a href="#" class="mr-1">+</a>
 
                             <small>
+                                {% if report.isMoon %}
+                                    <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
+                                {% endif %}
+
                                 <a href="{{ path('app_cartography', {
                                     galaxy: report.galaxy,
                                     system: report.system,

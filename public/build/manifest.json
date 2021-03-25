@@ -1,6 +1,11 @@
 {
   "build/app.css": "/build/app.96026a66.css",
   "build/app.js": "/build/app.e8f5e141.js",
-  "build/runtime.js": "/build/runtime.7012a30d.js",
-  "build/274.b7246625.js": "/build/274.b7246625.js"
+  "build/runtime.js": "/build/runtime.aab3b1e9.js",
+  "build/274.b7246625.js": "/build/274.b7246625.js",
+  "build/img/xtense.png": "/build/img/xtense.png",
+  "build/img/xtense2.png": "/build/img/xtense2.png",
+  "build/img/xtense3.png": "/build/img/xtense3.png",
+  "build/img/xtense_dev.png": "/build/img/xtense_dev.png",
+  "build/img/moon.png": "/build/img/moon.png"
 }

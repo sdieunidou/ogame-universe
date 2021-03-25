@@ -1,14 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Account' %}
+{% block title 'Xtense' %}
 
 {% block body %}
-    <p>
-        Xtense can be downloaded <a href="https://chrome.google.com/webstore/detail/xtense-gm/mkcgnadlbcakpmmmdfijdekknodapcgl?hl=fr" target="_blank">here</a>.
-    </p>
+    <h2>Installation</h2>
 
     <p>
-        Your secret token is:
-        <code>{{ app.user.xtensePassword }}</code>
+        Xtense can be downloaded here :
+    </p>
+
+    <ul>
+        <li>Chrome Extension: <a href="tool-xtense-web-extension/release/chrome-2.9.4.zip">chrome.zip</a>.</li>
+        <li>Firefox Extension: <a href="tool-xtense-web-extension/release/firefox-2.9.4.zip">firefox.zip</a>.</li>
+    </ul>
+
+    <h3>Chrome</h3>
+
+    <ol>
+        <li>
+            Entrez dans la barre d'adresse du navigateur: <code>chrome://extensions/</code>.
+        </li>
+        <li>
+            Activez le mode développeur:<br />
+            <img class="img-responsive" src="{{ asset('build/img/xtense_dev.png') }}" />
+        </li>
+        <li>
+            Vous n'avez plus qu'à sélectionner le fichier <code>.zip</code> et le glisser dans la fenetre des extensions, Chrome va l'ajouter automatiquement.<br />
+            <img class="img-responsive" src="{{ asset('build/img/xtense3.png') }}" />
+        </li>
+    </ol>
+
+    <h2>Configuration</h2>
+
+    <ul>
+        <li>Link OGSpy: <code>https://ogame.ovh</code></li>
+        <li>Your token: <code>{{ app.user.xtensePassword }}</code></li>
+    </ul>
+
+    <p class="text-center">
+        <img class="img-responsive" src="{{ asset('build/img/xtense.png') }}" />
+    </p>
+    <p class="text-center">
+        <img class="img-responsive" src="{{ asset('build/img/xtense2.png') }}" />
     </p>
 {% endblock %}
