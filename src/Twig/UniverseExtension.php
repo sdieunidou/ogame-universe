@@ -59,26 +59,11 @@ class UniverseExtension extends AbstractExtension
 
     public function hasActivity(?\DateTimeInterface $activityAt): bool
     {
-        if (empty($activityAt)) {
-            return false;
-        }
-
-        if ($activityAt < new \DateTime('-1 hour')) {
-            return false;
-        }
-
-        return true;
+        return Helper::hasActivity($activityAt);
     }
 
     public function getActivity(?\DateTimeInterface $activityAt): ?int
     {
-        if (!$this->hasActivity($activityAt)) {
-            return null;
-        }
-
-        $now = new \DateTime();
-        $diff = $now->diff($activityAt);
-
-        return $diff->i;
+        return Helper::getActivity($activityAt);
     }
 }

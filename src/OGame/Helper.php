@@ -32,4 +32,31 @@ class Helper
 
         return $system;
     }
+
+    public static function hasActivity(?\DateTimeInterface $activityAt): bool
+    {
+        if (empty($activityAt)) {
+            return false;
+        }
+
+        if ($activityAt < new \DateTime('-1 hour')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function getActivity(?\DateTimeInterface $activityAt): ?int
+    {
+        if (!self::hasActivity($activityAt)) {
+            return null;
+        }
+
+        $now = new \DateTime();
+        $diff = $now->diff($activityAt);
+
+        $activity = $diff->i;
+
+        return $activity < 15 ? 0 : $activity;
+    }
 }

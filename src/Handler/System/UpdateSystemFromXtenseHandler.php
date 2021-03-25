@@ -5,7 +5,10 @@ namespace App\Handler\System;
 use App\Entity\Planet;
 use App\Entity\Player;
 use App\Entity\Server;
+use App\OGame\Helper;
+use App\Repository\AllianceRepository;
 use App\Repository\PlanetRepository;
+use App\Repository\PlayerRepository;
 use App\Xtense\Exception\XtenseException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,19 +18,27 @@ final class UpdateSystemFromXtenseHandler
 
     private $planetRepository;
 
+    private $playerRepository;
+
+    private $allianceRepository;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        PlanetRepository $planetRepository
+        PlanetRepository $planetRepository,
+        PlayerRepository $playerRepository,
+        AllianceRepository $allianceRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->planetRepository = $planetRepository;
+        $this->playerRepository = $playerRepository;
+        $this->allianceRepository = $allianceRepository;
     }
 
-    public function __invoke(Server $server, array $data)
+    public function __invoke(Server $server, array $raw)
     {
-        $galaxy = (int) $data['galaxy'];
-        $system = (int) $data['system'];
+        $galaxy = (int) $raw['galaxy'];
+        $system = (int) $raw['system'];
 
         if (empty($galaxy) || empty($system)) {
             throw new XtenseException('galaxy or/and system and missing');
@@ -35,13 +46,16 @@ final class UpdateSystemFromXtenseHandler
 
         $now = new \DateTimeImmutable();
 
-        foreach ($data['rows'] as $position => $data) {
-            $position += 1;
-            $coords = sprintf('%d:%d:%d', $galaxy, $system, $position);
+        foreach ($raw['rows'] as $position => $data) {
+            if ($position < 1 || $position > 15) {
+                continue;
+            }
 
             if (empty($data) || empty($data['planet_id']) || empty($data['player_id'])) {
                 continue;
             }
+
+            $coords = sprintf('%d:%d:%d', $galaxy, $system, $position);
 
             $player = $this->playerRepository->findOneBy([
                 'server' => $server->getId(),
@@ -49,8 +63,26 @@ final class UpdateSystemFromXtenseHandler
             ]);
 
             if (!$player instanceof Player) {
-                // todo: add the new player
-                continue;
+                $player = (new Player())
+                    ->setServer($server)
+                    ->setOgameId((int) $data['player_id'])
+                    ->setName($data['player_name'])
+                    ->setStatus($data['status']?:Player::STATUS_ACTIVE)
+                ;
+
+                $allianceId = (int) $data['ally_id'];
+                if (!empty($allianceId) && $allianceId > 0) {
+                    $alliance = $this->allianceRepository->findOneBy([
+                        'server' => $server->getId(),
+                        'ogameId' => $allianceId,
+                    ]);
+
+                    if ($alliance) {
+                        $player->setAlliance($alliance);
+                    }
+                }
+
+                $this->entityManager->persist($player);
             }
 
             $planet = $this->planetRepository->getPlanetOfOgameIdAndPlayerId($server, (int) $data['planet_id'], $player->getOgameId());
@@ -81,19 +113,35 @@ final class UpdateSystemFromXtenseHandler
             $planet->setDebrisMetal($data['debris']['metal']);
             $planet->setDebrisCrystal($data['debris']['cristal']);
 
-            if ($data['activity'] === -1) {
-                $planet->setActivityAt($now);
-            } elseif (is_numeric($data['activity'])) {
-                $activityAt = new \DateTime(sprintf('-%d minutes', $data['activity']));
-                $planet->setActivityAt($activityAt);
+            if (is_numeric($data['activity'])) {
+                if ($data['activity'] === -1) {
+                    $planet->setActivity(null);
+                    $planet->setActivityAt(null);
+                } elseif ($data['activity'] < 15) {
+                    $planet->setActivity($data['activity']);
+                    $planet->setActivityAt($now);
+                } else {
+                    $activityAt = new \DateTime(sprintf('-%d minutes', $data['activity']));
+                    $planet->setActivity(Helper::getActivity($activityAt));
+                    $planet->setActivityAt($activityAt);
+                }
             }
 
-            if ($planet->getHasMoon() && $data['activityMoon'] === -1) {
-                $planet->setMoonActivityAt($now);
-            } elseif (is_numeric($data['activityMoon'])) {
-                $activityAt = new \DateTime(sprintf('-%d minutes', $data['activityMoon']));
-                $planet->setMoonActivityAt($activityAt);
+            if (is_numeric($data['activityMoon'])) {
+                if ($data['activityMoon'] === -1) {
+                    $planet->setMoonActivity(null);
+                    $planet->setMoonActivityAt(null);
+                } elseif ($data['activityMoon'] < 15) {
+                    $planet->setMoonActivity($data['activityMoon']);
+                    $planet->setMoonActivityAt($now);
+                } else {
+                    $activityAt = new \DateTime(sprintf('-%d minutes', $data['activityMoon']));
+                    $planet->setMoonActivity(Helper::getActivity($activityAt));
+                    $planet->setMoonActivityAt($activityAt);
+                }
             }
+
+            $planet->setLatestXtenseReportAt($now);
         }
 
         $this->entityManager->flush();

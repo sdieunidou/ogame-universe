@@ -49,6 +49,9 @@
                     <th>Moon</th>
                     <th>Name</th>
                     <th>Player</th>
+                    <th>Metal Debris</th>
+                    <th>Crystal Debris</th>
+                    <th>Xtense Data</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,13 +68,7 @@
 
                                 [{{ galaxy }}:{{ system }}:{{ loop.index }}]
 
-                                {% if has_activity(planet.activityAt) %}
-                                    {% set currentActivity = get_activity(planet.activityAt) %}
-
-                                    <span data-toggle="tooltip" data-placement="bottom" title="Last update: {{ planet.activityAt | format_time }}">
-                                        {{ ui.planetActivity(currentActivity) }}
-                                    </span>
-                                {% endif %}
+                                {{ ui.planetActivity(planet.activity, planet.activityAt) }}
 
                                 {% if spyReport is not none %}
                                     <div style="display: none" id="report-{{ spyReport.id }}">
@@ -85,30 +82,27 @@
                                         <a href="#">+</a>
                                     {% endif %}
 
-                                    <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
+                                    <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" {% if planet.moonSize > 0 %}data-toggle="tooltip" data-placement="bottom" title="{{ planet.moonSize | number_format }}km"{% endif%} />
 
-                                    {% if has_activity(planet.moonActivityAt) %}
-                                        {% set currentActivity = get_activity(planet.moonActivityAt) %}
-
-                                        <span data-toggle="tooltip" data-placement="bottom" title="Last update: {{ planet.moonActivityAt | format_time }}">
-                                            {{ ui.planetActivity(currentActivity) }}
-                                        </span>
-                                    {% endif %}
+                                    {{ ui.planetActivity(planet.moonActivity, planet.moonActivityAt) }}
 
                                     {% if spyReportMoon is not none %}
                                         <div style="display: none" id="report-{{ spyReportMoon.id }}">
                                             {{ ui.showSpyReport(spyReportMoon) }}
                                         </div>
                                     {% endif %}
-
-                                    <small>
-                                        {{ planet.moonSize | number_format }}km
-                                    </small>
                                 {% endif %}
                             </td>
                             <td>{{ planet.name }}</td>
                             <td>
                                 {{ ui.playerName(planet.player) }}
+                            </td>
+                            <td>{{ planet.debrisMetal }}</td>
+                            <td>{{ planet.debrisCrystal }}</td>
+                            <td>
+                                {% if planet.latestXtenseReportAt is not none %}
+                                    {{ planet.latestXtenseReportAt|format_datetime('short') }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% else %}
@@ -116,6 +110,9 @@
                             <td>
                                 [{{ galaxy }}:{{ system }}:{{ loop.index }}]
                             </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

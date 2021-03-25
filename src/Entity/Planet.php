@@ -92,6 +92,16 @@ class Planet
     private $reports;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $activity;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $moonActivity;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $activityAt;
@@ -110,6 +120,11 @@ class Planet
      * @ORM\Column(type="integer", nullable=true)
      */
     private $debrisCrystal;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $latestXtenseReportAt;
 
     public function __construct()
     {
@@ -344,6 +359,42 @@ class Planet
     public function setDebrisCrystal(?int $debrisCrystal): self
     {
         $this->debrisCrystal = $debrisCrystal;
+
+        return $this;
+    }
+
+    public function getLatestXtenseReportAt(): ?\DateTimeInterface
+    {
+        return $this->latestXtenseReportAt;
+    }
+
+    public function setLatestXtenseReportAt(?\DateTimeInterface $latestXtenseReportAt): self
+    {
+        $this->latestXtenseReportAt = $latestXtenseReportAt;
+
+        return $this;
+    }
+
+    public function getActivity(): ?int
+    {
+        return $this->activity;
+    }
+
+    public function setActivity(?int $activity): self
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+
+    public function getMoonActivity(): ?int
+    {
+        return $this->moonActivity;
+    }
+
+    public function setMoonActivity(?int $moonActivity): self
+    {
+        $this->moonActivity = $moonActivity;
 
         return $this;
     }

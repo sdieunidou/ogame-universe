@@ -36,6 +36,7 @@
                 <th>Name</th>
                 <th>Metal Debris</th>
                 <th>Crystal Debris</th>
+                <th>Xtense Data</th>
             </tr>
         </thead>
         <tbody>
@@ -56,13 +57,7 @@
                             [{{ planet.coordinates }}]
                         </a>
 
-                        {% if has_activity(planet.activityAt) %}
-                            {% set currentActivity = get_activity(planet.activityAt) %}
-
-                            <span data-toggle="tooltip" data-placement="bottom" title="Last update: {{ planet.activityAt | format_time }}">
-                                {{ ui.planetActivity(currentActivity) }}
-                            </span>
-                        {% endif %}
+                        {{ ui.planetActivity(planet.activity, planet.activityAt) }}
 
                         {% if spyReport is not none %}
                             <div style="display: none" id="report-{{ spyReport.id }}">
@@ -80,13 +75,7 @@
                                 <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
                             </span>
 
-                            {% if has_activity(planet.moonActivityAt) %}
-                                {% set currentActivity = get_activity(planet.moonActivityAt) %}
-
-                                <span data-toggle="tooltip" data-placement="bottom" title="Last update: {{ planet.moonActivityAt | format_time }}">
-                                    {{ ui.planetActivity(currentActivity) }}
-                                </span>
-                            {% endif %}
+                            {{ ui.planetActivity(planet.moonActivity, planet.moonActivityAt) }}
 
                             {% if spyReportMoon is not none %}
                                 <div style="display: none" id="report-{{ spyReportMoon.id }}">
@@ -98,6 +87,11 @@
                     <td>{{ planet.name }}</td>
                     <td>{{ planet.debrisMetal }}</td>
                     <td>{{ planet.debrisCrystal }}</td>
+                    <td>
+                        {% if planet.latestXtenseReportAt is not none %}
+                            {{ planet.latestXtenseReportAt|format_datetime('short') }}
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

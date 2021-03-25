@@ -94,6 +94,7 @@ final class AddSpyReportHandler
             ->setEnergy($data['data']['defender']['resources']['energy'])
         ;
 
+        /*
         if ($planet instanceof Planet) {
             if ($spy->getIsMoon()) {
                 $planet->setMoonActivityAt($spy->getSpyAt());
@@ -101,6 +102,7 @@ final class AddSpyReportHandler
                 $planet->setActivityAt($spy->getSpyAt());
             }
         }
+        */
 
         if (null === $spy->getId()) {
             $this->entityManager->persist($spy);
