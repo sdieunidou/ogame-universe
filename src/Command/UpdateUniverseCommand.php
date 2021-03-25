@@ -56,11 +56,25 @@ class UpdateUniverseCommand extends Command
 
         foreach ($servers as $server) {
             $data = $this->universeAPI->getUniverse($server);
-            $io->comment(sprintf('%d planets returned by the OGame API', \count($data)));
+            $io->comment(sprintf('%d planets returned by the OGame API', \count($data['planets'])));
 
-            $this->planetRepository->deleteAllOfServer($server);
+            if (!empty($server->getLatestUniverseUpdate())
+                && $data['lastUpdateDt'] < $server->getLatestUniverseUpdate()) {
+                $io->warning(sprintf('API outdated', \count($data)));
+                continue;
+            }
 
-            foreach ($data as $row) {
+            $allIds = [];
+            foreach ($data['planets'] as $row) {
+                $allIds[] = $row['id'];
+            }
+
+            $this->planetRepository->deleteAllOfServerExcept(
+                $server,
+                $allIds
+            );
+
+            foreach ($data['planets'] as $row) {
                 if (null === $planet = $this->planetRepository->findOneBy([
                         'server' => $server->getId(),
                         'ogameId' => $row['id'],
@@ -98,7 +112,7 @@ class UpdateUniverseCommand extends Command
                 }
             }
 
-            $server->setLatestUniverseUpdate(new \DateTimeImmutable());
+            $server->setLatestUniverseUpdate($data['lastUpdateDt']);
 
             $this->entityManager->flush();
         }

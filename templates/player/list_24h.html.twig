@@ -43,10 +43,10 @@
                     <th>Score</th>
                     <th>Score 24H</th>
                     <th>Diff</th>
-                    <th>Galaxies</th>
+                    <th>Militaire</th>
                     <th>Economie</th>
                     <th>Recherche</th>
-                    <th>Militaire</th>
+                    <th>Galaxies</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,16 +68,16 @@
                         <td>
                             {{ player.score - player.scoreAt24H }}
                         </td>
-                        <td>{{ player_galaxies(player)|join(',') }}</td>
+                        <td>
+                            {{ player.militaryScore | number_format }}
+                        </td>
                         <td>
                             {{ player.economyScore | number_format }}
                         </td>
                         <td>
                             {{ player.researchScore | number_format }}
                         </td>
-                        <td>
-                            {{ player.militaryScore | number_format }}
-                        </td>
+                        <td>{{ player_galaxies(player)|join(',') }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

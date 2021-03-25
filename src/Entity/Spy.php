@@ -59,7 +59,8 @@ class Spy
     private $playerClass;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Planet")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Planet", inversedBy="reports")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $planet;
 

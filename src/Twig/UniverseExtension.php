@@ -28,6 +28,8 @@ class UniverseExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('get_activity', [$this, 'getActivity']),
+            new TwigFunction('has_activity', [$this, 'hasActivity']),
             new TwigFunction('universe_galaxy', [$this, 'universeGalaxy']),
             new TwigFunction('universe_system', [$this, 'universeSystem']),
             new TwigFunction('player_galaxies', [$this, 'getPlayerGalaxies']),
@@ -53,5 +55,30 @@ class UniverseExtension extends AbstractExtension
     public function getPlanetsOfAllianceOfGalaxy(Alliance $alliance, int $galaxy): array
     {
         return $this->planetRepository->getPlanetsOfAllianceOfGalaxy($this->serverResolver->getCurrentServer(), $alliance, $galaxy);
+    }
+
+    public function hasActivity(?\DateTimeInterface $activityAt): bool
+    {
+        if (empty($activityAt)) {
+            return false;
+        }
+
+        if ($activityAt < new \DateTime('-1 hour')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getActivity(?\DateTimeInterface $activityAt): ?int
+    {
+        if (!$this->hasActivity($activityAt)) {
+            return null;
+        }
+
+        $now = new \DateTime();
+        $diff = $now->diff($activityAt);
+
+        return $diff->i;
     }
 }

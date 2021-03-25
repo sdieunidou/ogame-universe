@@ -5,44 +5,71 @@
 {% import 'app/_macro.html.twig' as ui %}
 
 {% block body %}
-    <table class="table table-striped mt-3 table-dark table-data display responsive">
-        <thead class="thead-dark">
-            <tr>
-                <th>{{ players|length }} joueur(s)</th>
-                <th>Score</th>
-                <th>Diff Score 24H</th>
-                <th>Galaxies</th>
-                <th>Economie</th>
-                <th>Recherche</th>
-                <th>Militaire</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for player in players %}
-                <tr class="{{ ui.playerStatusColor(player.status) }}">
-                    <td>
-                        {{ ui.playerName(player) }}
-                    </td>
-                    <td>
-                        {{ player.score | number_format }}
-                    </td>
-                    <td>
-                        <span data-toggle="tooltip" data-placement="bottom" title="{{ player.scoreAt24H | number_format }} points">
-                            {{ player.score - player.scoreAt24H }}
-                        </span>
-                    </td>
-                    <td>{{ player_galaxies(player)|join(',') }}</td>
-                    <td>
-                        {{ player.economyScore | number_format }}
-                    </td>
-                    <td>
-                        {{ player.researchScore | number_format }}
-                    </td>
-                    <td>
-                        {{ player.militaryScore | number_format }}
-                    </td>
+    <div class="page-players">
+        <div class="d-flex mb-3 form-coordinates">
+            {{ form_start(form, {
+                attr: {
+                    class: 'form-inline'
+                }
+            }) }}
+                <div class="form-group">
+                    {{ form_row(form.minScore, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_row(form.minMilitaryScore, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Filter!</button>
+            {{ form_end(form) }}
+        </div>
+        <table class="table table-striped mt-3 table-dark table-data display responsive">
+            <thead class="thead-dark">
+                <tr>
+                    <th>{{ players|length }} joueur(s)</th>
+                    <th>Score</th>
+                    <th>Diff Score 24H</th>
+                    <th>Militaire</th>
+                    <th>Economie</th>
+                    <th>Recherche</th>
+                    <th>Galaxies</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                    <tr class="{{ ui.playerStatusColor(player.status) }}">
+                        <td>
+                            {{ ui.playerName(player) }}
+                        </td>
+                        <td>
+                            {{ player.score | number_format }}
+                        </td>
+                        <td>
+                            <span data-toggle="tooltip" data-placement="bottom" title="{{ player.scoreAt24H | number_format }} points">
+                                {{ player.score - player.scoreAt24H }}
+                            </span>
+                        </td>
+                        <td>
+                            {{ player.militaryScore | number_format }}
+                        </td>
+                        <td>
+                            {{ player.economyScore | number_format }}
+                        </td>
+                        <td>
+                            {{ player.researchScore | number_format }}
+                        </td>
+                        <td>{{ player_galaxies(player)|join(',') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

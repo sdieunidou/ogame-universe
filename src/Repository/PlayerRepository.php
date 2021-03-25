@@ -24,12 +24,18 @@ class PlayerRepository extends ServiceEntityRepository
     /**
      * @return Player[] Returns an array of Player objects
      */
-    public function getPlayersActives(int $maxResults = 200, int $minScore = 500000): array
+    public function getPlayersActives(
+        int $maxResults = 200,
+        int $minScore = 500000,
+        int $minMilitaryScore = 500000
+    ): array
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.score > :minScore')
+            ->andWhere('p.militaryScore > :minMilitaryScore')
             ->andWhere('p.status != :statusNoob')
             ->setParameter('minScore', $minScore)
+            ->setParameter('minMilitaryScore', $minMilitaryScore)
             ->setParameter('statusNoob', Player::STATUS_HONORABLE);
 
         $qb

@@ -65,11 +65,15 @@
 
                                 [{{ galaxy }}:{{ system }}:{{ loop.index }}]
 
-                                {% if spyReport is not none %}
-                                    <span data-toggle="tooltip" data-placement="bottom" title="{{ spyReport.spyAt | format_time }}">
-                                        {{ ui.planetActivity(spyReport.activity) }}
-                                    </span>
+                                {% if has_activity(planet.activityAt) %}
+                                    {% set currentActivity = get_activity(planet.activityAt) %}
 
+                                    <span data-toggle="tooltip" data-placement="bottom" title="Last update: {{ planet.activityAt | format_time }}">
+                                        {{ ui.planetActivity(currentActivity) }}
+                                    </span>
+                                {% endif %}
+
+                                {% if spyReport is not none %}
                                     <div style="display: none" id="report-{{ spyReport.id }}">
                                         {{ ui.showSpyReport(spyReport) }}
                                     </div>
@@ -83,11 +87,15 @@
 
                                     <img alt="Moon" class="img-responsive" src="{{ asset('build/img/moon.png') }}" />
 
-                                    {% if spyReportMoon is not none %}
-                                        <span data-toggle="tooltip" data-placement="bottom" title="{{ spyReportMoon.spyAt | format_time }}">
-                                            {{ ui.planetActivity(spyReportMoon.activity) }}
-                                        </span>
+                                    {% if has_activity(planet.moonActivityAt) %}
+                                        {% set currentActivity = get_activity(planet.moonActivityAt) %}
 
+                                        <span data-toggle="tooltip" data-placement="bottom" title="Last update: {{ planet.moonActivityAt | format_time }}">
+                                            {{ ui.planetActivity(currentActivity) }}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if spyReportMoon is not none %}
                                         <div style="display: none" id="report-{{ spyReportMoon.id }}">
                                             {{ ui.showSpyReport(spyReportMoon) }}
                                         </div>

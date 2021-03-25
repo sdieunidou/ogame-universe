@@ -45,6 +45,13 @@ class UniverseAPI
             ];
         });
 
-        return $planets;
+        $dt = new \DateTime();
+        $dt->setTimestamp($crawler->attr('timestamp'));
+
+        return [
+            'lastUpdate' => $crawler->attr('timestamp'),
+            'lastUpdateDt' => $dt,
+            'planets' => $planets,
+        ];
     }
 }

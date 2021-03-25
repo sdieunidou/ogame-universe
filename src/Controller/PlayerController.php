@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Player;
+use App\Form\PlayerFilterType;
 use App\Form\PlayersInactivesType;
 use App\Repository\PlayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,11 +23,30 @@ class PlayerController extends AbstractController
     /**
      * @Route("/players", name="app_players")
      */
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $players = $this->playerRepository->getPlayersActives(1000);
+        $form = $this->container->get('form.factory')->createNamed(
+            '',
+            PlayerFilterType::class,
+            [
+                'minScore' => 700000,
+                'minMilitaryScore' => 500000,
+            ],
+            [
+                'method' => 'GET',
+                'csrf_protection' => false,
+            ]
+        );
+        $form->handleRequest($request);
+
+        $players = $this->playerRepository->getPlayersActives(
+            1000,
+            $form->get('minScore')->getData(),
+            $form->get('minMilitaryScore')->getData()
+        );
 
         return $this->render('player/list.html.twig', [
+            'form' => $form->createView(),
             'players' => $players,
         ]);
     }

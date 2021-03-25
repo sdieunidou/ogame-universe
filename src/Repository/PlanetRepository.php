@@ -44,6 +44,27 @@ class PlanetRepository extends ServiceEntityRepository
         ;
     }
 
+    public function deleteAllOfServerExcept(Server $server, array $ids)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.server = :serverId')
+        ;
+
+        if (!empty($ids)) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->notIn('p.ogameId', $ids)
+                );
+        }
+
+        return $qb
+            ->delete()
+            ->setParameter('serverId', $server->getId())
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
     public function deleteAllOfServer(Server $server)
     {
         return $this->createQueryBuilder('p')

@@ -11,35 +11,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-class SpyFilterType extends AbstractType
+class PlayerFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $server = $options['server'];
-
         $builder
-            ->add('galaxy', NumberType::class, [
-                'required' => false,
-                'html5' => true,
-                'attr' => [
-                    'min' => 1,
-                    'max' => $server->getGalaxies(),
-                ],
-                'constraints' => [
-                    new Range([
-                        'min' => 1,
-                        'max' => $server->getGalaxies(),
-                    ]),
-                ],
-                'label' => 'G',
-            ])
-
-            ->add('minMilitaryScore', NumberType::class, [
-                'required' => false,
+            ->add('minScore', NumberType::class, [
                 'html5' => true,
                 'attr' => [
                     'min' => 0,
-                    'step' => 0.1
                 ],
                 'constraints' => [
                     new NotBlank(),
@@ -47,21 +27,22 @@ class SpyFilterType extends AbstractType
                         'min' => 0,
                     ]),
                 ],
-                'label' => 'Min military (in M)',
+                'label' => 'Min score',
             ])
 
-            ->add('minDate', DateType::class, [
-                'required' => false,
+            ->add('minMilitaryScore', NumberType::class, [
                 'html5' => true,
-                'widget' => 'single_text',
+                'attr' => [
+                    'min' => 0,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new Range([
+                        'min' => 0,
+                    ]),
+                ],
+                'label' => 'Min military',
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired([
-            'server',
-        ]);
     }
 }

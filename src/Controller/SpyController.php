@@ -41,6 +41,7 @@ class SpyController extends AbstractController
             SpyFilterType::class,
             [
                 'minDate' => new \DateTime('-10 days'),
+                'minMilitaryScore' => 1000,
             ],
             [
                 'method' => 'GET',
@@ -64,7 +65,8 @@ class SpyController extends AbstractController
         $reports = $this->spyRepository->getOfServer(
             $server,
             $formFilter->get('galaxy')->getData(),
-            $formFilter->get('minDate')->getData()
+            $formFilter->get('minDate')->getData(),
+            (int) ($formFilter->get('minMilitaryScore')->getData() * 1000000)
         );
 
         return $this->render('spy/list.html.twig', [

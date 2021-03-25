@@ -75,7 +75,7 @@ code {
 
 .form-coordinates {
   input[type=number] {
-    max-width: 60px;
+    max-width: 70px;
   }
 }
 
@@ -135,6 +135,7 @@ table.table-data tbody > tr:last-child > td:last-child {
   display: inline-block;
 }
 
+.page-players > .d-flex,
 .page-galaxy > .d-flex,
 .page-inactive-24h > .d-flex,
 .page-spy > .d-flex {
@@ -143,6 +144,7 @@ table.table-data tbody > tr:last-child > td:last-child {
   width: 80%;
 }
 
+.page-players #DataTables_Table_0_wrapper,
 .page-galaxy #DataTables_Table_0_wrapper,
 .page-spy #DataTables_Table_0_wrapper,
 .page-inactive-24h #DataTables_Table_0_wrapper
@@ -150,6 +152,14 @@ table.table-data tbody > tr:last-child > td:last-child {
   top: -47px;
   position: relative;
   z-index: 999;
+}
+
+.page-players {
+  .form-coordinates {
+    input[type=number] {
+      max-width: 100px;
+    }
+  }
 }
 
 .page-spy .player-name {

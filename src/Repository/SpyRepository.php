@@ -20,14 +20,12 @@ class SpyRepository extends ServiceEntityRepository
         parent::__construct($registry, Spy::class);
     }
 
-    /**
-     * @param Server $server
-     * @param int|null $galaxy
-     * @param \DateTimeInterface|null $minDate
-     *
-     * @return Spy[] Returns an array of Spy objects
-     */
-    public function getOfServer(Server $server, ?int $galaxy = null, ?\DateTimeInterface $minDate = null): array
+    public function getOfServer(
+        Server $server,
+        ?int $galaxy = null,
+        ?\DateTimeInterface $minDate = null,
+        ?int $minMilitaryScore = null
+    ): array
     {
         $qb = $this->createQueryBuilder('s')
             ->andWhere('s.server = :serverId')
@@ -46,6 +44,13 @@ class SpyRepository extends ServiceEntityRepository
             $qb
                 ->andWhere('s.spyAt >= :minDate')
                 ->setParameter('minDate', $minDate)
+            ;
+        }
+
+        if (null !== $minMilitaryScore) {
+            $qb
+                ->andWhere('s.totalShipScore >= :minMilitaryScore')
+                ->setParameter('minMilitaryScore', $minMilitaryScore)
             ;
         }
 
