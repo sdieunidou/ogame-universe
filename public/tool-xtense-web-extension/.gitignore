@@ -1,0 +1,12 @@
+# IntelliJ project files
+.idea
+node_modules
+*.iml
+.idea/modules.xml
+.idea/tool-xtense-web-extension.iml
+.idea/vcs.xml
+.idea/workspace.xml
+
+release/
+extension/contribs/jquery.min.js
+extension/contribs/loglevel.min.js

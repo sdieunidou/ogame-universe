@@ -1,0 +1,50 @@
+{
+  "name": "xtense-web-extension",
+  "version": "2.9.4",
+  "description": "Xtense collects Game Data for OGSpy",
+  "main": "extension/xtense.user.js",
+  "scripts": {
+    "clean": "gulp clean",
+    "node-clean": "npm prune && npm install",
+    "version": "cross-var dot-json extension/manifest.json version $npm_package_version && cross-var dot-json extension/manifest.chrome version $npm_package_version && cross-var dot-json extension/manifest.firefox version $npm_package_version",
+    "pack:firefox": "gulp packfirefox",
+    "pack:chrome": "gulp packchrome",
+    "build": "gulp clean && gulp build",
+    "release": "gulp default",
+    "dev": "cd extension && web-ext run --verbose --firefox=firefoxdeveloperedition --start-url www.ogame.fr",
+    "lint": "cd extension && web-ext lint",
+    "test": "echo 'no test'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OGSteam/tool-xtense-web-extension.git"
+  },
+  "keywords": [
+    "ogsteam",
+    "ogspy",
+    "xtense",
+    "browser"
+  ],
+  "author": "OGSteam",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/OGSteam/tool-xtense-web-extension/issues"
+  },
+  "homepage": "https://github.com/OGSteam/tool-xtense-web-extension#readme",
+  "devDependencies": {
+    "chrome-webstore-upload-cli": "^1.2.0",
+    "cross-var": "^1.1.0",
+    "del": "^5.1.0",
+    "dot-json": "^1.2.0",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-zip": "^5.0.1",
+    "minimatch": "^3.0.4",
+    "read-pkg": "latest",
+    "web-ext": "3.1.1"
+  },
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "loglevel": "^1.6.8"
+  }
+}
