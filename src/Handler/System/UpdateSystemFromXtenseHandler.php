@@ -3,6 +3,7 @@
 namespace App\Handler\System;
 
 use App\Entity\Planet;
+use App\Entity\PlanetActivity;
 use App\Entity\Player;
 use App\Entity\Server;
 use App\OGame\Helper;
@@ -131,6 +132,17 @@ final class UpdateSystemFromXtenseHandler
                     $planet->setActivity(Helper::getActivity($activityAt));
                     $planet->setActivityAt($activityAt);
                 }
+
+                if (null !== $planet->getActivity()) {
+                    $planetActivity = (new PlanetActivity())
+                        ->setPlanet($planet)
+                        ->setActivity($planet->getActivity())
+                        ->setActivityAt($planet->getActivityAt())
+                        ->setDebrisMetal($data['debris']['metal'])
+                        ->setDebrisCrystal($data['debris']['cristal']);
+
+                    $planet->addActivity($planetActivity);
+                }
             }
 
             if (is_numeric($data['activityMoon'])) {
@@ -145,6 +157,18 @@ final class UpdateSystemFromXtenseHandler
                     $planet->setMoonActivity(Helper::getActivity($activityAt));
                     $planet->setMoonActivityAt($activityAt);
                 }
+
+                if (null !== $planet->getMoonActivity()) {
+                    $moonActivity = (new PlanetActivity())
+                        ->setPlanet($planet)
+                        ->setMoonActivity($planet->getMoonActivity())
+                        ->setMoonActivityAt($planet->getMoonActivityAt())
+                        ->setDebrisMetal($data['debris']['metal'])
+                        ->setDebrisCrystal($data['debris']['cristal'])
+                    ;
+
+                    $planet->addActivity($moonActivity);
+                }
             }
 
             $planet->setLatestXtenseReportAt($now);
@@ -153,221 +177,3 @@ final class UpdateSystemFromXtenseHandler
         $this->entityManager->flush();
     }
 }
-/*
-JSON Example :
-{
-  "galaxy": "5",
-  "system": "396",
-  "rows": [
-    null,
-    null,
-    null,
-    {
-      "player_id": 106616,
-      "planet_name": "Bamby",
-      "planet_id": "33686227",
-      "moon_id": "33686233",
-      "moon": 1,
-      "player_name": "Simpson",
-      "status": "vI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": "110712",
-      "planet_name": "Colonie",
-      "planet_id": "33716829",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "trakiss",
-      "status": "",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": 0,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 109604,
-      "planet_name": "Grand Line",
-      "planet_id": "33706781",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "El Conquistador",
-      "status": "vI",
-      "ally_id": 1874,
-      "ally_tag": "RedA...",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 110635,
-      "planet_name": "Cerberos",
-      "planet_id": "33716232",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "driss",
-      "status": "vI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 105010,
-      "planet_name": "Ruxavel",
-      "planet_id": "33675718",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "Karnal07",
-      "status": "vI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": "110712",
-      "planet_name": "Colonie",
-      "planet_id": "33716828",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "trakiss",
-      "status": "",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": 0,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 107716,
-      "planet_name": "Krypton",
-      "planet_id": "33693238",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "samlebourrin",
-      "status": "vI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 106219,
-      "planet_name": "Iscandar",
-      "planet_id": "33683730",
-      "moon_id": "33683732",
-      "moon": 1,
-      "player_name": "tristantun",
-      "status": "vI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 134355,
-      "planet_name": "planète mère",
-      "planet_id": "35289968",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "Renegade Zibal",
-      "status": "bvI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 110624,
-      "planet_name": "Gimini",
-      "planet_id": "33716100",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "Shlomi",
-      "status": "bvI",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    {
-      "player_id": 113020,
-      "planet_name": "Cr_Halley",
-      "planet_id": "33725602",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "alan.22",
-      "status": "I",
-      "ally_id": "0",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": -1,
-      "activityMoon": -1
-    },
-    null,
-    null,
-    {
-      "player_id": "",
-      "planet_name": "Black Hole",
-      "planet_id": "",
-      "moon_id": "",
-      "moon": 0,
-      "player_name": "Lost in space",
-      "status": "",
-      "ally_id": "",
-      "ally_tag": "",
-      "debris": {
-        "metal": 0,
-        "cristal": 0
-      },
-      "activity": "",
-      "activityMoon": ""
-    }
-  ],
-}
- */

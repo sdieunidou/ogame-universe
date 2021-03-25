@@ -134,13 +134,13 @@ class PlanetRepository extends ServiceEntityRepository
     public function getPlanetOfOgameIdAndPlayerId(Server $server, int $ogameId, int $playerId): ?Planet
     {
         return $this->createQueryBuilder('p')
+            ->innerJoin('p.player', 'pl')
             ->andWhere('p.ogameId = :ogameId')
             ->andWhere('p.server = :serverId')
-            ->andWhere('p.player = :playerId')
+            ->andWhere('pl.ogameId = :playerId')
             ->setParameter('ogameId', $ogameId)
             ->setParameter('playerId', $playerId)
             ->setParameter('serverId', $server->getId())
-            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
