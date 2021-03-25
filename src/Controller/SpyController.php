@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\GalaxyType;
+use App\Form\SpyFilterType;
 use App\Form\SpyReportType;
 use App\Handler\Spy\AddSpyReportHandler;
 use App\Repository\SpyRepository;
@@ -37,8 +38,10 @@ class SpyController extends AbstractController
 
         $formFilter = $this->container->get('form.factory')->createNamed(
             '',
-            GalaxyType::class,
-            [],
+            SpyFilterType::class,
+            [
+                'minDate' => new \DateTime('-10 days'),
+            ],
             [
                 'method' => 'GET',
                 'csrf_protection' => false,
@@ -58,7 +61,11 @@ class SpyController extends AbstractController
             return $this->redirectToRoute('app_spy');
         }
 
-        $reports = $this->spyRepository->getOfServer($server, $formFilter->get('galaxy')->getData());
+        $reports = $this->spyRepository->getOfServer(
+            $server,
+            $formFilter->get('galaxy')->getData(),
+            $formFilter->get('minDate')->getData()
+        );
 
         return $this->render('spy/list.html.twig', [
             'reports' => $reports,

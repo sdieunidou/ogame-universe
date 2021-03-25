@@ -21,6 +21,5 @@ class SpyReportType extends AbstractType
                 ],
             ])
         ;
-
     }
 }

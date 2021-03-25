@@ -36,6 +36,14 @@
                     }) }}
                 </div>
 
+                <div class="form-group">
+                    {{ form_row(formFilter.minDate, {
+                        attr: {
+                            class: 'form-control-sm mr-1 ml-2'
+                        }
+                    }) }}
+                </div>
+
                 <button type="submit" class="btn btn-primary btn-sm ml-1 mr-1">Filter!</button>
                 {{ form_end(formFilter) }}
             </div>
