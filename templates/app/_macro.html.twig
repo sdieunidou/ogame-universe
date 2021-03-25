@@ -67,9 +67,12 @@
         {% set expectedActivity = get_activity(activityAt) %}
 
         {{ _self.planetActivityLabel(activity) }}
-        <small data-toggle="tooltip" data-placement="bottom" title="prediction based on xtense data">
-            {{ _self.planetActivityLabel(expectedActivity) }}
-        </small>
+
+        {% if activity != expectedActivity %}
+            <small data-toggle="tooltip" data-placement="bottom" title="prediction based on xtense data">
+                {{ _self.planetActivityLabel(expectedActivity) }}
+            </small>
+        {% endif %}
     {% endif %}
 {%- endmacro -%}
 

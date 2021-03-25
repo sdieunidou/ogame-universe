@@ -100,8 +100,8 @@ class Xtense
             case 'system':
                 ($this->updateSystemHandler)($server, $data);
                 $returnedData['type'] = 'system';
-                $returnedData['galaxy'] = $raw['galaxy'];
-                $returnedData['system'] = $raw['system'];
+                $returnedData['galaxy'] = $data['galaxy'];
+                $returnedData['system'] = $data['system'];
                 break;
 
             case 'ranking':
