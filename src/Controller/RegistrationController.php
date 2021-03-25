@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Handler\Xtense\TokenGeneratorHandler;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,8 @@ class RegistrationController extends AbstractController
      */
     public function register(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenGeneratorHandler $tokenGeneratorHandler
     ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -36,6 +38,10 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            if (empty($user->getXtensePassword())) {
+                ($tokenGeneratorHandler)($user);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
